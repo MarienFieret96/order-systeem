@@ -1,4 +1,4 @@
-import { BackIcon } from "./backIcon";
+import { BackIcon } from "./BackIcon";
 import { CartIcon } from "./CartIcon";
 import { CheckmarkIcon } from "./CheckmarkIcon";
 import { CloseIcon } from "./CloseIcon";

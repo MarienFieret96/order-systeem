@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useReducer } from "react";
 import reducer from "../reducers/products_reducer";
-import customFetch from "../utils/CustomFetch";
+import customFetch from "../utils/customFetch";
 import toast from "react-hot-toast";
 
 //get products from local storage, if present

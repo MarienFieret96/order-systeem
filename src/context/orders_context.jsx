@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useReducer } from "react";
 import reducer from "../reducers/orders_reducer";
-import customFetch from "../utils/CustomFetch";
+import customFetch from "../utils/customFetch";
 
 const getCart = () => {
 	let cartItems = localStorage.getItem("cart");

@@ -12,7 +12,7 @@ const LoginPage = () => {
 	const handleSubmit = async () => {
 		try {
 			const { data } = await axios.post(
-				"https://ordersysteem.onrender.com/api/v1/auth/login",
+				"https://ordersysteem-api.onrender.com/api/v1/auth/login",
 				login,
 				{
 					withCredentials: true,

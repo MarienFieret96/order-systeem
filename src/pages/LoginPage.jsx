@@ -1,26 +1,17 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import customFetch from "../utils/customFetch";
 
 const LoginPage = () => {
 	const navigate = useNavigate();
 	const [login, setLogin] = useState({
-		email: "",
-		password: "",
+		email: "chris@gmail.com",
+		password: "secret",
 	});
 	const handleSubmit = async () => {
 		try {
-			const { data } = await axios.post(
-				"https://ordersysteem-api.onrender.com/api/v1/auth/login",
-				login,
-				{
-					withCredentials: true,
-					headers: {
-						"Content-type": "application/json",
-					},
-				},
-			);
+			const { data } = await customFetch.post("/auth/login", login);
 			console.log(data);
 			navigate("/");
 		} catch (error) {

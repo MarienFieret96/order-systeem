@@ -6,13 +6,13 @@ import customFetch from "../utils/customFetch";
 const LoginPage = () => {
 	const navigate = useNavigate();
 	const [login, setLogin] = useState({
-		email: "chris@gmail.com",
-		password: "secret",
+		email: "",
+		password: "",
 	});
 	const handleSubmit = async () => {
 		try {
 			const { data } = await customFetch.post("/auth/login", login);
-			console.log(data);
+
 			navigate("/");
 		} catch (error) {
 			navigate("/orders");
@@ -24,14 +24,14 @@ const LoginPage = () => {
 				<h1>Login</h1>
 				<input
 					type="text"
-					placeholder="email"
+					placeholder="Email"
 					autoFocus
 					onChange={(e) => setLogin({ ...login, email: e.target.value })}
 					value={login.email}
 				/>
 				<input
 					type="text"
-					placeholder="password"
+					placeholder="Wachtwoord"
 					onChange={(e) => setLogin({ ...login, password: e.target.value })}
 					value={login.password}
 				/>
@@ -47,12 +47,13 @@ const Wrapper = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	width: 100%;
 	.login-container {
-		margin: 4rem 10rem;
-		padding: 2rem;
+		margin-top: 4rem;
+		padding: 2rem 4rem;
 		border: 1px solid var(--clr-grey);
 		border-radius: var(--radius);
-		width: 100%;
+		width: 70%;
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;

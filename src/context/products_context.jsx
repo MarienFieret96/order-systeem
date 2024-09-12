@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useReducer } from "react";
 import reducer from "../reducers/products_reducer";
 import customFetch from "../utils/customFetch";
 import toast from "react-hot-toast";
+import { categorieen } from "../utils/constants";
 
 //get products from local storage, if present
 const getProducts = () => {
@@ -22,15 +23,25 @@ const getCategories = () => {
 		return [];
 	}
 };
+const getAllCategories = () => {
+	let categories = localStorage.getItem("all_categories");
+	if (categories) {
+		return JSON.parse(localStorage.getItem("all_categories"));
+	} else {
+		return [];
+	}
+};
 
 //set initial state and execute local storage fetching functions
 const initialState = {
 	categorie_index: 0,
 	product_index: 0,
+	state_product: {},
 	compare_state: false,
 	compare_products: [],
 	order_state: false,
 	products: getProducts(),
+	all_categories: getAllCategories(),
 	categories: getCategories(),
 	loading: false,
 	category_loading: false,
@@ -52,16 +63,133 @@ export const ProductsProvider = ({ children }) => {
 		try {
 			const response = await customFetch.get("/products");
 			const products = response.data.products;
-			dispatch({ type: "GET_PRODUCTS_SUCCESS", payload: products });
+			const allCategories = getAllCategories(products);
+			const categories = getCategories(allCategories);
 			localStorage.setItem("products", JSON.stringify(products));
+			localStorage.setItem("all_categories", JSON.stringify(allCategories));
+			localStorage.setItem("categories", JSON.stringify(categories));
+			dispatch({
+				type: "GET_PRODUCTS_SUCCESS",
+				payload: { products, allCategories, categories },
+			});
 		} catch (error) {
 			dispatch({ type: "GET_PRODUCTS_ERROR" });
 		}
 	};
 
+	const getAllCategories = (products) => {
+		const verseVis = [];
+		const verseFilet = [];
+		const maaltijden = [];
+		const kantEnKlaar = [];
+		const schotels = [];
+		const schaaldieren = [];
+		const oesters = [];
+		const gerookteVis = [];
+		const salades = [];
+		const broodjes = [];
+		const gebakkenVis = [];
+		const sauzen = [];
+		const zeewierProducten = [];
+		const soepen = [];
+		const diepvries = [];
+		const conserven = [];
+		const wijnen = [];
+		const overig = [];
+		products.forEach((product) => {
+			switch (product.categorie) {
+				case "Verse vis":
+					verseVis.push(product);
+					break;
+				case "Verse filet":
+					verseFilet.push(product);
+					break;
+				case "Maaltijden":
+					maaltijden.push(product);
+					break;
+				case "Kant en klaar":
+					kantEnKlaar.push(product);
+					break;
+				case "Schotels":
+					schotels.push(product);
+					break;
+				case "Schaal- en schelpdieren":
+					schaaldieren.push(product);
+					break;
+				case "Oesters":
+					schaaldieren.push(product);
+					break;
+				case "Gerookte vis":
+					gerookteVis.push(product);
+					break;
+				case "Salades":
+					salades.push(product);
+					break;
+				case "Broodjes":
+					broodjes.push(product);
+					break;
+				case "Gebakken vis":
+					gebakkenVis.push(product);
+					break;
+				case "Sauzen":
+					sauzen.push(product);
+					break;
+				case "zeewierProducten":
+					zeewierProducten.push(product);
+					break;
+				case "Soepen":
+					soepen.push(product);
+					break;
+				case "Diepvries":
+					diepvries.push(product);
+					break;
+				case "Conserven":
+					conserven.push(product);
+					break;
+				case "Wijnen":
+					wijnen.push(product);
+					break;
+				case "Overig":
+					overig.push(product);
+					break;
+				default:
+					console.log(`geen categorie met de naam ${product.categorie} `);
+			}
+		});
+		const categoryArray = [
+			verseVis,
+			verseFilet,
+			maaltijden,
+			kantEnKlaar,
+			schotels,
+			schaaldieren,
+			oesters,
+			gerookteVis,
+			salades,
+			broodjes,
+			gebakkenVis,
+			sauzen,
+			zeewierProducten,
+			soepen,
+			diepvries,
+			conserven,
+			wijnen,
+			overig,
+		];
+		return categoryArray;
+	};
+
+	const sortObjectsArray = (arr, key) => {
+		return arr.sort((a, b) => {
+			if (a[key] < b[key]) {
+				return -1;
+			}
+			return 0;
+		});
+	};
+
 	//push each product into its own category array
-	const fetchCategories = () => {
-		dispatch({ type: "GET_CATEGORIES_BEGIN" });
+	const getCategories = (categories) => {
 		const verseVis = [];
 		const verseFilet = [];
 		const kantEnKlaar = [];
@@ -72,46 +200,64 @@ export const ProductsProvider = ({ children }) => {
 		const schaaldieren = [];
 		const wijnen = [];
 		const overig = [];
-		state.products?.map((product) => {
-			switch (product.categorie) {
+		categorieen.forEach((cat, index) => {
+			switch (categorieen[index]) {
 				case "Verse vis":
-					verseVis.push({ naam: product.naam, index: product.productIndex });
+					verseVis.push(...categories[index]);
 					break;
 				case "Verse filet":
-					verseFilet.push({ naam: product.naam, index: product.productIndex });
+					verseFilet.push(...categories[index]);
+					break;
+				case "Maaltijden":
+					kantEnKlaar.push(...categories[index]);
 					break;
 				case "Kant en klaar":
-					kantEnKlaar.push({ naam: product.naam, index: product.productIndex });
+					kantEnKlaar.push(...categories[index]);
 					break;
-				case "Salades en sauzen":
-					saladesEnSauzen.push({
-						naam: product.naam,
-						index: product.productIndex,
-					});
-					break;
-				case "Gerookte en gebakken vis":
-					gerookteVis.push({ naam: product.naam, index: product.productIndex });
-					break;
-				case "Conserven":
-					conserven.push({ naam: product.naam, index: product.productIndex });
-					break;
-				case "Diepvries":
-					diepvries.push({ naam: product.naam, index: product.productIndex });
+				case "Schotels":
+					kantEnKlaar.push(...categories[index]);
 					break;
 				case "Schaal- en schelpdieren":
-					schaaldieren.push({
-						naam: product.naam,
-						index: product.productIndex,
-					});
+					schaaldieren.push(...categories[index]);
+					break;
+				case "Oesters":
+					schaaldieren.push(...categories[index]);
+					break;
+				case "Gerookte vis":
+					gerookteVis.push(...categories[index]);
+					break;
+				case "Salades":
+					saladesEnSauzen.push(...categories[index]);
+					break;
+				case "Broodjes":
+					kantEnKlaar.push(...categories[index]);
+					break;
+				case "Gebakken vis":
+					gerookteVis.push(...categories[index]);
+					break;
+				case "Sauzen":
+					saladesEnSauzen.push(...categories[index]);
+					break;
+				case "Zeewierproducten":
+					overig.push(...categories[index]);
+					break;
+				case "Soepen":
+					diepvries.push(...categories[index]);
+					break;
+				case "Diepvries":
+					diepvries.push(...categories[index]);
+					break;
+				case "Conserven":
+					conserven.push(...categories[index]);
 					break;
 				case "Wijnen":
-					wijnen.push({ naam: product.naam, index: product.productIndex });
+					wijnen.push(...categories[index]);
 					break;
 				case "Overig":
-					overig.push({ naam: product.naam, index: product.productIndex });
+					overig.push(...categories[index]);
 					break;
 				default:
-					console.log(`geen categorie met de naam ${product.categorie} `);
+					console.log(`Geen categorie met de naam ${cat}`);
 			}
 		});
 		const categoryArray = [
@@ -126,8 +272,13 @@ export const ProductsProvider = ({ children }) => {
 			wijnen,
 			overig,
 		];
-		dispatch({ type: "GET_CATEGORIES_SUCCESS", payload: categoryArray });
-		localStorage.setItem("categories", JSON.stringify(categoryArray));
+
+		const sortedCategories = categoryArray.map((item, index) => {
+			const sortedCategory = sortObjectsArray(item, "naam");
+			return sortedCategory;
+		});
+
+		return sortedCategories;
 	};
 
 	//create product
@@ -136,18 +287,16 @@ export const ProductsProvider = ({ children }) => {
 		try {
 			const response = await customFetch.post("/products", product);
 			const newProduct = response.data.product;
-			const products = getProducts();
-			products.push(newProduct);
-			localStorage.setItem("products", JSON.stringify(products));
-			localStorage.removeItem("categories");
-			dispatch({ type: "CREATE_PRODUCT_SUCCESS", payload: products });
+			dispatch({ type: "CREATE_PRODUCT_SUCCESS" });
 			toast.success(`${newProduct.naam} toegevoegd!`);
+			fetchProducts();
 			return true;
 		} catch (error) {
 			toast.error("Product aanmaken niet gelukt");
 			return false;
 		}
 	};
+
 	const updateProduct = async (product, productId) => {
 		dispatch({ type: "UPDATE_PRODUCT_START" });
 		try {
@@ -156,12 +305,9 @@ export const ProductsProvider = ({ children }) => {
 				product,
 			);
 			const updatedProduct = response.data.product;
-			const products = getProducts();
-			products.splice(product.productIndex, 1, updatedProduct);
-			localStorage.setItem("products", JSON.stringify(products));
-			localStorage.removeItem("categories");
-			dispatch({ type: "UPDATE_PRODUCT_SUCCESS", payload: products });
+			dispatch({ type: "UPDATE_PRODUCT_SUCCESS" });
 			toast.success(`${updatedProduct.naam} aangepast!`);
+			fetchProducts();
 			return true;
 		} catch (error) {
 			toast.error("Product aanpassen niet gelukt");
@@ -169,20 +315,13 @@ export const ProductsProvider = ({ children }) => {
 		}
 	};
 
-	const deleteProduct = async (_id, productIndex, naam) => {
+	const deleteProduct = async (_id, naam) => {
 		dispatch({ type: "DELETE_PRODUCT_START" });
 		try {
-			const response = await customFetch.delete(`/products/${_id}`);
-			console.log(response);
-			const products = getProducts();
-			products.splice(productIndex, 1);
-			for (let i = 0; i < products.length; i++) {
-				products[i].productIndex = i;
-			}
-			localStorage.setItem("products", JSON.stringify(products));
-			localStorage.removeItem("categories");
-			dispatch({ type: "DELETE_PRODUCT_SUCCESS", payload: products });
+			await customFetch.delete(`/products/${_id}`);
+			dispatch({ type: "DELETE_PRODUCT_SUCCESS" });
 			toast.success(`${naam} verwijderd!`);
+			fetchProducts();
 			return true;
 		} catch (error) {
 			toast.error("Product verwijderen niet gelukt");
@@ -195,8 +334,8 @@ export const ProductsProvider = ({ children }) => {
 		dispatch({ type: "SET_CATEGORY", payload: index });
 	};
 
-	const setProduct = (index) => {
-		dispatch({ type: "SET_PRODUCT", payload: index });
+	const setProduct = (product) => {
+		dispatch({ type: "SET_PRODUCT", payload: product });
 	};
 
 	// toggle modal status
@@ -211,21 +350,26 @@ export const ProductsProvider = ({ children }) => {
 		dispatch({ type: "TOGGLE_ORDER", payload: !state.order_state });
 	};
 
-	const addProductToCompare = (index) => {
-		const products = state.compare_products;
-		if (products.includes(index)) {
-			for (let i = 0; i < products.length; i++) {
-				if (products[i] === index) {
-					products.splice(i, 1);
-				}
-			}
-		} else {
-			products.push(index);
-		}
-		dispatch({ type: "ADD_COMPARE_PRODUCT", payload: products });
+	const findObjectByProperty = (array, property, value) => {
+		return array.find((item) => item[property] === value);
 	};
-	const addProductToOrder = (index) => {
-		dispatch({ type: "START_ORDER", payload: index });
+
+	const addProductToCompare = (item) => {
+		const products = state.compare_products;
+		const { naam } = item;
+		const compareProductIncluded = findObjectByProperty(products, "naam", naam);
+		if (compareProductIncluded) {
+			const newProductsToCompare = products.filter(
+				(item) => item["naam"] !== naam,
+			);
+			dispatch({ type: "ADD_COMPARE_PRODUCT", payload: newProductsToCompare });
+		} else {
+			products.push(item);
+			dispatch({ type: "ADD_COMPARE_PRODUCT", payload: products });
+		}
+	};
+	const addProductToOrder = () => {
+		dispatch({ type: "START_ORDER" });
 	};
 
 	//fetch products if local storage is empty
@@ -235,14 +379,6 @@ export const ProductsProvider = ({ children }) => {
 		}
 	}, []);
 
-	//fetch categories if local storage is empty and products have loaded
-	useEffect(() => {
-		if (state.products.length > 0) {
-			fetchCategories();
-		}
-	}, [state.products]);
-
-	//return
 	return (
 		<ProductsContext.Provider
 			value={{

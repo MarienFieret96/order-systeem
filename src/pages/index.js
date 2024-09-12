@@ -4,12 +4,11 @@ import ProductPage from "./ProductPage";
 import InkoopPage from "./InkoopPage";
 import InpakPage from "./InpakPage";
 import RoosterPage from "./RoosterPage";
-import NewProductPage from "./NewProductPage";
 import InstellingenPage from "./InstellingenPage";
 import LoginPage from "./LoginPage";
 import CartPage from "./CartPage";
-import UpdateBestellingPage from "./UpdateBestellingPage";
 import OrderInpakPage from "./OrderInpakPage";
+import AddProductPage from "./AddProductPage";
 
 export {
 	BestellingPage,
@@ -18,10 +17,9 @@ export {
 	InkoopPage,
 	InpakPage,
 	RoosterPage,
-	NewProductPage,
 	InstellingenPage,
 	LoginPage,
 	CartPage,
-	UpdateBestellingPage,
 	OrderInpakPage,
+	AddProductPage,
 };

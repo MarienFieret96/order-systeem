@@ -16,13 +16,9 @@ const OrderView = ({ orders }) => {
 };
 
 const BestellingPage = () => {
-	const { orders, fetchOrders } = useOrderContext();
-	const [date, setDate] = useState(new Date());
+	const { orders, orders_date, updateOrdersDate } = useOrderContext();
 	const [filter, setFilter] = useState("naam");
-	const handleChange = (date) => {
-		setDate(date);
-		fetchOrders(date);
-	};
+
 	const RenderView = () => {
 		if (orders.length === 0) {
 			return (
@@ -53,8 +49,8 @@ const BestellingPage = () => {
 				</select>
 				<DatePicker
 					minDate={new Date()}
-					selected={date}
-					onChange={(date) => handleChange(date)}
+					selected={orders_date}
+					onChange={(date) => updateOrdersDate(date)}
 					dateFormat="dd MMMM"
 					locale={nl}
 					filterDate={(date) => date.getDay() !== 0 && date.getDay() !== 1}

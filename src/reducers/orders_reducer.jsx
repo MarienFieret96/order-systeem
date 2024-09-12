@@ -1,3 +1,14 @@
+const baseDate = () => {
+	let today = new Date();
+	return today;
+};
+const baseTime = () => {
+	let today = new Date();
+	today.setHours(8);
+	today.setMinutes(0);
+	return today;
+};
+
 const order_reducer = (state, action) => {
 	if (action.type === "UPDATE_USER_INFO") {
 		const { item, value } = action.payload;
@@ -25,7 +36,15 @@ const order_reducer = (state, action) => {
 				betaalStatus: "nee",
 				aangenomenDoor: "Gijsbert",
 				_id: "",
+				datum: baseDate(),
+				tijd: baseTime(),
 			},
+		};
+	}
+	if (action.type === "UPDATE_ORDERS_DATE") {
+		return {
+			...state,
+			orders_date: action.payload,
 		};
 	}
 
@@ -38,33 +57,12 @@ const order_reducer = (state, action) => {
 	}
 
 	if (action.type === "ADD_TO_CART") {
-		const {
-			gewicht,
-			keuzes,
-			opmerkingen,
-			product,
-			stuks,
-			prijs,
-			naam,
-			itemIndex,
-			stukPrijs,
-		} = action.payload;
-		const newItem = {
-			id: product + gewicht.hoeveelheid + gewicht.delen + stuks,
-			gewicht,
-			keuzes,
-			opmerkingen,
-			product,
-			stuks,
-			prijs,
-			naam,
-			itemIndex,
-			stukPrijs,
-		};
-		return { ...state, cart: [...state.cart, newItem] };
+		return { ...state, cart: [...state.cart, action.payload] };
 	}
 	if (action.type === "REMOVE_FROM_CART") {
-		const tempCart = state.cart.filter((item) => item.id !== action.payload);
+		const tempCart = state.cart.filter(
+			(item, index) => index !== action.payload,
+		);
 		return { ...state, cart: tempCart };
 	}
 	if (action.type === "TOGGLE_AMOUNT") {
@@ -93,9 +91,9 @@ const order_reducer = (state, action) => {
 	if (action.type === "COUNT_CART_TOTAL") {
 		const { total_items, total_amount } = state.cart.reduce(
 			(total, cartItem) => {
-				const { prijs, stuks } = cartItem;
-				total.total_items += 1;
-				total.total_amount += prijs * stuks;
+				const { totaalPrijs, aantal } = cartItem;
+				total.total_items += aantal;
+				total.total_amount += totaalPrijs * aantal;
 				return total;
 			},
 			{
@@ -130,12 +128,12 @@ const order_reducer = (state, action) => {
 			const today = new Date();
 
 			return (
-				tempDate.getDate() == today.getDate() &&
-				tempDate.getMonth() == today.getMonth() &&
-				tempDate.getFullYear() == today.getFullYear()
+				tempDate.getDate() === today.getDate() &&
+				tempDate.getMonth() === today.getMonth() &&
+				tempDate.getFullYear() === today.getFullYear()
 			);
 		};
-		if (isToday) {
+		if (() => isToday()) {
 			return {
 				...state,
 				user: {
@@ -145,27 +143,32 @@ const order_reducer = (state, action) => {
 					betaalStatus: "nee",
 					aangenomenDoor: "Gijsbert",
 					_id: "",
+					datum: baseDate(),
+					tijd: baseTime(),
 				},
 				cart: [],
 				order_loading: false,
 				order_error: false,
-				orders: [...state.orders, newOrder],
+				orders: [],
+			};
+		} else {
+			return {
+				...state,
+				user: {
+					naam: "",
+					telefoon: "",
+					opmerking: "",
+					betaalStatus: "nee",
+					aangenomenDoor: "Gijsbert",
+					_id: "",
+					datum: baseDate(),
+					tijd: baseTime(),
+				},
+				cart: [],
+				order_loading: false,
+				order_error: false,
 			};
 		}
-		return {
-			...state,
-			user: {
-				naam: "",
-				telefoon: "",
-				opmerking: "",
-				betaalStatus: "nee",
-				aangenomenDoor: "Gijsbert",
-				_id: "",
-			},
-			cart: [],
-			order_loading: false,
-			order_error: false,
-		};
 	}
 	if (action.type === "CREATE_ORDER_ERROR") {
 		return { ...state, order_loading: false, order_error: true };
@@ -174,20 +177,53 @@ const order_reducer = (state, action) => {
 		return { ...state, order_loading: true };
 	}
 	if (action.type === "UPDATE_ORDER_SUCCESS") {
-		return {
-			...state,
-			user: {
-				naam: "",
-				telefoon: "",
-				opmerking: "",
-				betaalStatus: "nee",
-				aangenomenDoor: "Gijsbert",
-				_id: "",
-			},
-			cart: [],
-			order_loading: false,
-			order_error: false,
+		const newOrder = action.payload;
+		const tempDate = new Date(newOrder.datum);
+		const isToday = () => {
+			const today = new Date();
+
+			return (
+				tempDate.getDate() === today.getDate() &&
+				tempDate.getMonth() === today.getMonth() &&
+				tempDate.getFullYear() === today.getFullYear()
+			);
 		};
+		if (() => isToday()) {
+			return {
+				...state,
+				user: {
+					naam: "",
+					telefoon: "",
+					opmerking: "",
+					betaalStatus: "nee",
+					aangenomenDoor: "Gijsbert",
+					_id: "",
+					datum: baseDate(),
+					tijd: baseTime(),
+				},
+				orders: [],
+				cart: [],
+				order_loading: false,
+				order_error: false,
+			};
+		} else {
+			return {
+				...state,
+				user: {
+					naam: "",
+					telefoon: "",
+					opmerking: "",
+					betaalStatus: "nee",
+					aangenomenDoor: "Gijsbert",
+					_id: "",
+					datum: baseDate(),
+					tijd: baseTime(),
+				},
+				cart: [],
+				order_loading: false,
+				order_error: false,
+			};
+		}
 	}
 	if (action.type === "UPDATE_ORDER_ERROR") {
 		return { ...state, order_loading: false, order_error: true };
@@ -205,6 +241,8 @@ const order_reducer = (state, action) => {
 				betaalStatus: "nee",
 				aangenomenDoor: "Gijsbert",
 				_id: "",
+				datum: baseDate(),
+				tijd: baseTime(),
 			},
 			cart: [],
 			order_loading: false,

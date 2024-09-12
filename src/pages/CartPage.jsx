@@ -4,7 +4,7 @@ import { useOrderContext } from "../context/orders_context";
 import styled from "styled-components";
 import DatePicker, { registerLocale, setDefaultLocale } from "react-datepicker";
 import { ThrashIcon, ChatIcon, PlusIcon, EditIcon } from "../assets/svg";
-import { AmountButton, CartItem, UpdateOrderModal } from "../components";
+import { AmountButton, CartItem, OrderModal } from "../components";
 import { formatPrice } from "../utils/helpers";
 import nl from "date-fns/locale/nl";
 import { useProductsContext } from "../context/products_context";
@@ -35,24 +35,13 @@ const CartPage = () => {
 		setCartItems,
 		clearUserInfo,
 	} = useOrderContext();
-	const { order_state, toggleOrder } = useProductsContext();
 
-	const { gewicht } = cart;
+	const { order_state, toggleOrder, products, setProduct, toggleModal, modal } =
+		useProductsContext();
 
 	const [cartItem, setCartItem] = useState({});
-	const [product, setProduct] = useState({});
-	const [modal, setModal] = useState(false);
+	const [updateIndex, setUpdateIndex] = useState(0);
 	const [deleteModal, setDeleteModal] = useState(false);
-
-	const [date, setDate] = useState(baseDate());
-	const [time, setTime] = useState(baseTime());
-
-	const increase = (id) => {
-		toggleAmount(id, "inc");
-	};
-	const decrease = (id) => {
-		toggleAmount(id, "dec");
-	};
 
 	const formatDate = (datum, tijdstip) => {
 		const date = datum;
@@ -68,19 +57,24 @@ const CartPage = () => {
 		navigate("/products");
 	};
 
+	const findObjectByProperty = (array, property, value) => {
+		return array.find((item) => item[property] === value);
+	};
+
 	const openModal = (item, i) => {
-		console.log(item);
+		const productToUpdate = findObjectByProperty(products, "_id", item);
 		setCartItem(cart[i]);
-		setProduct(item);
-		setModal(true);
+		setUpdateIndex(i);
+		setProduct(productToUpdate);
+		toggleModal();
 	};
 	const closeModal = () => {
-		setModal(false);
+		toggleModal();
 	};
 	const updateCartItem = (updatedItem) => {
 		let tempArray = [];
-		cart.forEach((item) => {
-			if (item.id !== updatedItem.id) {
+		cart.forEach((item, i) => {
+			if (i !== updateIndex) {
 				tempArray.push(item);
 			} else {
 				tempArray.push(updatedItem);
@@ -97,9 +91,18 @@ const CartPage = () => {
 	};
 
 	const handleSubmit = () => {
-		const { naam, telefoon, opmerking, betaalStatus, aangenomenDoor, _id } =
-			user;
-		const datum = formatDate(date, time);
+		const {
+			naam,
+			telefoon,
+			opmerking,
+			betaalStatus,
+			aangenomenDoor,
+			_id,
+			datum,
+			tijd,
+		} = user;
+		// const datum = formatDate(date, time);
+		const tempDate = formatDate(datum, tijd);
 		if (cart.length === 0) return;
 		const newOrder = {
 			naam,
@@ -107,7 +110,7 @@ const CartPage = () => {
 			items: cart,
 			betaalStatus,
 			opmerking,
-			datum,
+			datum: tempDate,
 			aangenomenDoor,
 			_id,
 		};
@@ -117,7 +120,7 @@ const CartPage = () => {
 			orderItems: cart,
 			betaalStatus,
 			opmerking,
-			datum,
+			datum: tempDate,
 			aangenomenDoor,
 			_id,
 		};
@@ -128,8 +131,6 @@ const CartPage = () => {
 			createOrder(newOrder);
 		}
 		navigate("/");
-
-		// if id.length is meer dan 0 update anders create
 	};
 	const personeel = [
 		"Gijsbert",
@@ -184,8 +185,8 @@ const CartPage = () => {
 						<h5>Datum:</h5>
 						<DatePicker
 							minDate={new Date()}
-							selected={date}
-							onChange={(date) => setDate(date)}
+							selected={user.datum}
+							onChange={(e) => updateUserInfo("datum", e)}
 							dateFormat="dd MMMM"
 							locale={nl}
 							filterDate={(date) => date.getDay() !== 0 && date.getDay() !== 1}
@@ -198,9 +199,9 @@ const CartPage = () => {
 							showTimeSelectOnly
 							minTime={new Date(0, 0, 0, 9, 0)}
 							maxTime={new Date(0, 0, 0, 18, 30)}
-							selected={time}
-							onChange={(time) => setTime(time)}
-							onFocus={() => setTime(new Date())}
+							selected={user.tijd}
+							onChange={(e) => updateUserInfo("tijd", e)}
+							onFocus={() => updateUserInfo("tijd", new Date())}
 							dateFormat="H:mm"
 							locale={nl}
 							timeIntervals={5}
@@ -280,7 +281,9 @@ const CartPage = () => {
 						<div className="add-item" onClick={addProduct}>
 							<PlusIcon />
 						</div>
-						<h4 className="total-price">totaal: {formatPrice(total_amount)}</h4>
+						<h4 className="total-price">
+							totaal: ~{formatPrice(total_amount)}
+						</h4>
 					</div>
 					<div className="btn-row">
 						<Link to="/products">
@@ -299,10 +302,9 @@ const CartPage = () => {
 				</div>
 			</form>
 			{modal && (
-				<UpdateOrderModal
+				<OrderModal
 					closeModal={closeModal}
 					orderItem={cartItem}
-					product={product}
 					updateOrderItem={updateCartItem}
 				/>
 			)}
@@ -559,6 +561,21 @@ const Wrapper = styled.div`
 			}
 			a {
 				width: 100%;
+			}
+		}
+	}
+	.modal {
+		position: absolute;
+		top: 4rem;
+		left: 72px;
+		label {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			gap: 0.5rem;
+			input {
+				width: 13px;
+				height: 13px;
 			}
 		}
 	}

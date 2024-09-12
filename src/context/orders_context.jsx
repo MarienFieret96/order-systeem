@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useReducer } from "react";
 import reducer from "../reducers/orders_reducer";
 import customFetch from "../utils/customFetch";
+import { format } from "date-fns";
 
 const getCart = () => {
 	let cartItems = localStorage.getItem("cart");
@@ -9,6 +10,16 @@ const getCart = () => {
 	} else {
 		return [];
 	}
+};
+
+const baseDate = () => {
+	return new Date();
+};
+const baseTime = () => {
+	let today = new Date();
+	today.setHours(8);
+	today.setMinutes(0);
+	return today;
 };
 
 const initialState = {
@@ -22,6 +33,7 @@ const initialState = {
 	single_order_error: false,
 	single_order: {},
 	reload: false,
+	orders_date: baseDate(),
 	user: {
 		naam: "",
 		telefoon: "",
@@ -29,6 +41,8 @@ const initialState = {
 		betaalStatus: "nee",
 		aangenomenDoor: "Gijsbert",
 		_id: "",
+		datum: baseDate(),
+		tijd: baseTime(),
 	},
 };
 
@@ -46,6 +60,9 @@ export const OrderProvider = ({ children }) => {
 
 	const clearUserInfo = () => {
 		dispatch({ type: "CLEAR_USER_INFO" });
+	};
+	const updateOrdersDate = (date) => {
+		dispatch({ type: "UPDATE_ORDERS_DATE", payload: date });
 	};
 
 	const setCartItems = (items) => {
@@ -125,9 +142,9 @@ export const OrderProvider = ({ children }) => {
 	}, [state.cart]);
 
 	useEffect(() => {
-		const date = new Date();
-		fetchOrders(date);
-	}, []);
+		fetchOrders(state.orders_date);
+		console.log("get orders");
+	}, [state.orders_date]);
 
 	return (
 		<OrderContext.Provider
@@ -146,6 +163,7 @@ export const OrderProvider = ({ children }) => {
 				updateOrder,
 				fetchSingleOrder,
 				updateOrderStatus,
+				updateOrdersDate,
 			}}
 		>
 			{children}

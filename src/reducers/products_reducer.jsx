@@ -3,16 +3,17 @@ const products_reducer = (state, action) => {
 		return { ...state, loading: true };
 	}
 	if (action.type === "GET_PRODUCTS_SUCCESS") {
-		return { ...state, loading: false, products: action.payload };
+		const { products, allCategories, categories } = action.payload;
+		return {
+			...state,
+			loading: false,
+			products: products,
+			all_categories: allCategories,
+			categories: categories,
+		};
 	}
 	if (action.type === "GET_PRODUCTS_ERROR") {
 		return { ...state, loading: false, error: true };
-	}
-	if (action.type === "GET_CATEGORIES_BEGIN") {
-		return { ...state, category_loading: true };
-	}
-	if (action.type === "GET_CATEGORIES_SUCCESS") {
-		return { ...state, category_loading: false, categories: action.payload };
 	}
 	if (action.type === "SET_CATEGORY") {
 		const newCategory = action.payload;
@@ -20,7 +21,7 @@ const products_reducer = (state, action) => {
 	}
 	if (action.type === "SET_PRODUCT") {
 		const newProduct = action.payload;
-		return { ...state, product_index: newProduct };
+		return { ...state, state_product: newProduct };
 	}
 	if (action.type === "CREATE_PRODUCT_START") {
 		return {
@@ -32,11 +33,8 @@ const products_reducer = (state, action) => {
 		};
 	}
 	if (action.type === "CREATE_PRODUCT_SUCCESS") {
-		const updatedProducts = action.payload;
-		console.log(updatedProducts);
 		return {
 			...state,
-			products: updatedProducts,
 			loading: false,
 			error: false,
 		};
@@ -57,10 +55,8 @@ const products_reducer = (state, action) => {
 		return { ...state, loading: true };
 	}
 	if (action.type === "DELETE_PRODUCT_SUCCESS") {
-		const updatedProducts = action.payload;
 		return {
 			...state,
-			products: updatedProducts,
 			loading: false,
 			error: false,
 		};
@@ -94,10 +90,8 @@ const products_reducer = (state, action) => {
 		};
 	}
 	if (action.type === "START_ORDER") {
-		const newValue = action.payload;
 		return {
 			...state,
-			product_index: newValue,
 			compare_state: false,
 			compare_products: [],
 			order_state: true,

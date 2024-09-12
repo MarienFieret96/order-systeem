@@ -6,14 +6,12 @@ import {
 	InkoopPage,
 	InpakPage,
 	RoosterPage,
-	NewProductPage,
+	AddProductPage,
 	InstellingenPage,
 	LoginPage,
 	CartPage,
-	UpdateBestellingPage,
 	OrderInpakPage,
 } from "./pages";
-import ParentComponent from "./pages/ParentComponent";
 import { Navbar } from "./components";
 import { Toaster } from "react-hot-toast";
 
@@ -26,20 +24,18 @@ function App() {
 				<Route path="/" element={<HomePage />} />
 				<Route path="/orders" element={<BestellingPage />} />
 				<Route path="/orders/inpakken/:id" element={<OrderInpakPage />} />
-				<Route path="/orders/:id" element={<UpdateBestellingPage />} />
 				<Route path="/products" element={<ProductPage />} />
 				<Route path="/inkoop" element={<InkoopPage />} />
 				<Route path="/inpak" element={<InpakPage />} />
-				<Route path="/rooster" element={<RoosterPage />} />
-				<Route path="/newproduct" element={<NewProductPage newProp={true} />} />
+				<Route path="/informatie" element={<RoosterPage />} />
+				<Route path="/addproduct" element={<AddProductPage update={false} />} />
 				<Route
 					path="/updateproduct"
-					element={<NewProductPage newProp={false} />}
+					element={<AddProductPage update={true} />}
 				/>
 				<Route path="/instellingen" element={<InstellingenPage />} />
 				<Route path="/login" element={<LoginPage />} />
 				<Route path="/cart" element={<CartPage />} />
-				<Route path="/test" element={<ParentComponent />} />
 			</Routes>
 		</BrowserRouter>
 	);

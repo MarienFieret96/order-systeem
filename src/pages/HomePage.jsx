@@ -24,14 +24,14 @@ const HomePage = () => {
 					<h2>Inpaklijst</h2>
 				</div>
 			</Link>
-			<Link to="/rooster">
+			<Link to="/informatie">
 				<div className="router-button">
 					<h2>Informatie</h2>
 				</div>
 			</Link>
-			<Link to="/login">
+			<Link to="/instellingen">
 				<div className="router-button">
-					<h2>Inloggen</h2>
+					<h2>Instellingen</h2>
 				</div>
 			</Link>
 		</Wrapper>

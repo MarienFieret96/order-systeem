@@ -28,7 +28,7 @@ export const categoryArray = [
 		},
 	},
 	{
-		naam: "Gerookte en gebakken vis",
+		naam: "Gebakken vis",
 		style: {
 			color: "#fff",
 			background: "#008080",
@@ -72,6 +72,27 @@ export const categoryArray = [
 	},
 ];
 
+export const categorieen = [
+	"Verse vis",
+	"Verse filet",
+	"Maaltijden",
+	"Kant en klaar",
+	"Schotels",
+	"Schaal- en schelpdieren",
+	"Oesters",
+	"Gerookte vis",
+	"Salades",
+	"Broodjes",
+	"Gebakken vis",
+	"Sauzen",
+	"Zeewierproducten",
+	"Soepen",
+	"Diepvries",
+	"Conserven",
+	"Wijnen",
+	"Overig",
+];
+
 export const allergenenArray = [
 	{ name: "gluten", checked: false },
 	{ name: "ei", checked: false },
@@ -89,33 +110,20 @@ export const allergenenArray = [
 	{ name: "lupine", checked: false },
 ];
 
-export const wijnenArray = [
-	{ name: "A Cappela", checked: false },
-	{ name: "Aragosta", checked: false },
-	{ name: "Aramis", checked: false },
-	{ name: "Dusseau", checked: false },
-	{ name: "Goddello", checked: false },
-	{ name: "Moments", checked: false },
-	{ name: "Montgolfier", checked: false },
-	{ name: "Riesling", checked: false },
-	{ name: "Weissburgunder", checked: false },
-	{ name: "Viognier", checked: false },
-	{ name: "Halmer", checked: false },
-	{ name: "Halmer Rosé", checked: false },
-];
-
-export const gerechtenArray = [
-	{ name: "Oven", checked: false },
-	{ name: "Bakken", checked: false },
-	{ name: "Wokken", checked: false },
-	{ name: "BBQ", checked: false },
-	{ name: "Sushi", checked: false },
-	{ name: "Sous vide", checked: false },
-];
-
-export const sauzenArray = [
-	{ name: "Hollandaise saus", checked: false },
-	{ name: "Bearnaise saus", checked: false },
-	{ name: "Kreeften saus", checked: false },
-	{ name: "Dille saus", checked: false },
+export const werknemers = [
+	"Gijsbert",
+	"Marleen",
+	"Gertrude",
+	"Marilène",
+	"Laura",
+	"Jeanita",
+	"Brenda",
+	"Janneke",
+	"Marien",
+	"Esther",
+	"Tom",
+	"Erica",
+	"Sophie",
+	"Reinier",
+	"Overig",
 ];

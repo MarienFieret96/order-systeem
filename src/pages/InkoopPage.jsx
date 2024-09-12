@@ -1,164 +1,98 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import {
+	InkoopSidebar,
+	AddInkoopProduct,
+	AdviesInkoopProduct,
+	UpdateInkoopProduct,
+	InkoopProduct,
+} from "../components";
 import { ForwardIcon } from "../assets/svg/ForwardIcon";
 
-const AdriLijst = () => {
-	const inkooplijst = [
-		"Zalmfilet E-Trim 4/5",
-		"Kabeljauwfilet grof 900/1300",
-		"Zalmfilet E-Trim 4/5",
-		"Kabeljauwfilet grof 900/1300",
-		"Zalmfilet E-Trim 4/5",
-		"Kabeljauwfilet grof 900/1300",
-		"Zalmfilet E-Trim 4/5",
-		"Kabeljauwfilet grof 900/1300",
-		"Zalmfilet E-Trim 4/5",
-		"Kabeljauwfilet grof 900/1300",
-		"Zalmfilet E-Trim 4/5",
-		"Kabeljauwfilet grof 900/1300",
-		"Zalmfilet E-Trim 4/5",
-		"Kabeljauwfilet grof 900/1300",
-		"Zalmfilet E-Trim 4/5",
-		"Kabeljauwfilet grof 900/1300",
-		"Zalmfilet E-Trim 4/5",
-		"Kabeljauwfilet grof 900/1300",
-		"Zalmfilet E-Trim 4/5",
-		"Kabeljauwfilet grof 900/1300",
-	];
-
-	return (
-		<div className="content-wrapper">
-			<h1>Adri en Zoon</h1>
-			<ul>
-				{inkooplijst.map((item, index) => {
-					return <li key={index}>{item}</li>;
-				})}
-			</ul>
-		</div>
-	);
-};
-const VolfoodLijst = () => {
-	const inkooplijst = [
-		"Haringsalade",
-		"Haring met dille salade",
-		"Smikkelpot",
-		"Basis vissalade",
-		"Atlantis salade",
-		"Haringsalade",
-		"Haring met dille salade",
-		"Smikkelpot",
-		"Basis vissalade",
-		"Atlantis salade",
-		"Haringsalade",
-		"Haring met dille salade",
-		"Smikkelpot",
-		"Basis vissalade",
-		"Atlantis salade",
-	];
-	return (
-		<div className="content-wrapper">
-			<h1>Volfood</h1>
-			<ul>
-				{inkooplijst.map((item, index) => {
-					return <li key={index}>{item}</li>;
-				})}
-			</ul>
-		</div>
-	);
-};
-const MarienLijst = () => {
-	const inkooplijst = [
-		"Gerookte makrelen",
-		"Palingfilet",
-		"Forelfilet",
-		"Noorse garnalen",
-		"Rivierkreeftvlees",
-		"Staartgarnalen",
-		"Uitjes",
-	];
-	return (
-		<div className="content-wrapper">
-			<h1>Oom Marien</h1>
-			<ul>
-				{inkooplijst.map((item, index) => {
-					return <li key={index}>{item}</li>;
-				})}
-			</ul>
-		</div>
-	);
-};
-const BarneveldLijst = () => {
-	const inkooplijst = [
-		"Kibbelingbakjes",
-		"Lekkerbekbakjes",
-		"Ersatzpapier",
-		"Inpakpapier",
-		"Kibbelingzakken groot",
-		"Kibbelzakken klein",
-		"Vacuumzakken 100/150",
-		"Vacuumzakken 150/250",
-		"Vacuumzakken 300/400",
-	];
-	return (
-		<div className="content-wrapper">
-			<h1>Van Barneveld</h1>
-			<ul>
-				{inkooplijst.map((item, index) => {
-					return <li key={index}>{item}</li>;
-				})}
-			</ul>
-		</div>
-	);
-};
+const dummyData = [
+	{
+		_id: 123,
+		leverancier: "Adri en Zoon",
+		producten: [
+			{ naam: "Kabeljauw", voorraad: 0, threshold: 0 },
+			{ naam: "Zalmfilet E-trim 5/6", voorraad: 0, threshold: 0 },
+			{ naam: "Zalmfilet D-trim 5/6", voorraad: 0, threshold: 3 },
+			{ naam: "Zeekraal 1kg", voorraad: 0, threshold: 0 },
+			{ naam: "Lamsoor 1kg", voorraad: 0, threshold: 0 },
+			{ naam: "Mosselen Imperial 10x1", voorraad: 0, threshold: 0 },
+		],
+	},
+	{
+		_id: 234,
+		leverancier: "Oom Marien",
+		producten: [
+			{ naam: "Kabeljauw", voorraad: 0, threshold: 0 },
+			{ naam: "Zalmfilet E-trim 5/6", voorraad: 0, threshold: 0 },
+			{ naam: "Zalmfilet D-trim 5/6", voorraad: 0, threshold: 0 },
+			{ naam: "Zeekraal 1kg", voorraad: 0, threshold: 0 },
+			{ naam: "Lamsoor 1kg", voorraad: 0, threshold: 0 },
+			{ naam: "Mosselen Imperial 10x1", voorraad: 0, threshold: 0 },
+		],
+	},
+	{
+		_id: 345,
+		leverancier: "Van Barneveld",
+		producten: [
+			{ naam: "Kabeljauw", voorraad: 0, threshold: 0 },
+			{ naam: "Zalmfilet E-trim 5/6", voorraad: 0, threshold: 0 },
+			{ naam: "Zalmfilet D-trim 5/6", voorraad: 0, threshold: 0 },
+			{ naam: "Zeekraal 1kg", voorraad: 0, threshold: 0 },
+			{ naam: "Lamsoor 1kg", voorraad: 0, threshold: 0 },
+			{ naam: "Mosselen Imperial 10x1", voorraad: 0, threshold: 0 },
+		],
+	},
+];
 
 const InkoopPage = () => {
-	const [inkoopLijst, setInkoopLijst] = useState("adri");
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState(false);
+	const [inkoopProducten, setInkoopProducten] = useState(dummyData);
+	const [inkoopIndex, setInkoopIndex] = useState(0);
+	const [inkoopProductStatus, setInkoopProductStatus] = useState("read");
 
-	const lookup = {
-		adri: AdriLijst,
-		volfood: VolfoodLijst,
-		marien: MarienLijst,
-		barneveld: BarneveldLijst,
+	if (loading) {
+		return <div>Loading....</div>;
+	}
+	if (error) {
+		return <div>Er is iets mis gegaan...</div>;
+	}
+
+	const renderContent = () => {
+		if (inkoopProductStatus === "read") {
+			return (
+				<InkoopProduct
+					inkoopProduct={inkoopProducten[inkoopIndex]}
+					inkoopIndex={inkoopIndex}
+					setInkoopIndex={setInkoopIndex}
+					inkoopProductStatus={inkoopProductStatus}
+					setInkoopProductStatus={setInkoopProductStatus}
+				/>
+			);
+		}
+		if (inkoopProductStatus === "add") {
+			return <AddInkoopProduct />;
+		}
+		if (inkoopProductStatus === "update") {
+			return <UpdateInkoopProduct />;
+		}
+		return <AdviesInkoopProduct />;
 	};
-
-	const LijstComponent = lookup[inkoopLijst];
-
 	return (
 		<Wrapper>
 			<div className="wrapper">
-				<div className="sidebar">
-					<div
-						className={inkoopLijst === "adri" ? "button active" : "button"}
-						onClick={() => setInkoopLijst("adri")}
-					>
-						<h4>Adri en Zoon</h4>
-						<ForwardIcon />
-					</div>
-					<div
-						className={inkoopLijst === "volfood" ? "button active" : "button"}
-						onClick={() => setInkoopLijst("volfood")}
-					>
-						<h4>Volfood</h4>
-						<ForwardIcon />
-					</div>
-					<div
-						className={inkoopLijst === "marien" ? "button active" : "button"}
-						onClick={() => setInkoopLijst("marien")}
-					>
-						<h4>Oom Marien</h4>
-						<ForwardIcon />
-					</div>
-					<div
-						className={inkoopLijst === "barneveld" ? "button active" : "button"}
-						onClick={() => setInkoopLijst("barneveld")}
-					>
-						<h4>van Barneveld</h4>
-						<ForwardIcon />
-					</div>
-				</div>
-				<div className="content">
-					<LijstComponent />
-				</div>
+				<InkoopSidebar
+					inkoopProducten={inkoopProducten}
+					inkoopIndex={inkoopIndex}
+					setInkoopIndex={setInkoopIndex}
+					inkoopProductStatus={inkoopProductStatus}
+					setInkoopProductStatus={setInkoopProductStatus}
+				/>
+				{renderContent()}
 			</div>
 		</Wrapper>
 	);
@@ -173,6 +107,7 @@ const Wrapper = styled.div`
 		height: 100%;
 		.sidebar {
 			width: 200px;
+			min-width: 200px;
 			height: 100vh;
 			overflow-y: hidden;
 			border-right: 1px solid var(--clr-grey);
@@ -188,17 +123,66 @@ const Wrapper = styled.div`
 				background-color: var(--clr-light-grey);
 			}
 		}
-		.content {
-			width: 100%;
-			overflow-y: scroll;
+		.content-wrapper {
 			padding: 2rem;
-			h1 {
-				margin-bottom: 2rem;
+			display: flex;
+			flex-direction: column;
+			width: 100%;
+			gap: 1rem;
+			.row {
+				display: flex;
+				justify-content: space-between;
+				gap: 1rem;
+				h2 {
+					margin-bottom: 1rem;
+				}
+				.input-container {
+					width: 100%;
+					h4 {
+						margin-bottom: 0.5rem;
+					}
+				}
+				.svg-container {
+					svg {
+						vertical-align: top;
+						height: 32px;
+					}
+				}
+				button {
+					width: 100%;
+				}
 			}
-			ul li {
-				margin-bottom: 1rem;
-				font-size: 1.25rem;
-				list-style: none;
+			form {
+				display: flex;
+				flex-direction: column;
+				gap: 1rem;
+			}
+			input,
+			select {
+				padding: 0.5rem;
+				width: 100%;
+			}
+		}
+		.inkoop {
+			.center {
+				display: flex;
+				justify-content: start;
+				align-items: center;
+			}
+			.grid {
+				display: grid;
+				grid-template-columns: 3fr 2fr 1fr 0.5fr;
+			}
+
+			.svg-container {
+				display: flex;
+				align-items: end;
+				justify-content: end;
+			}
+		}
+		.counter {
+			input {
+				width: 50px;
 			}
 		}
 	}

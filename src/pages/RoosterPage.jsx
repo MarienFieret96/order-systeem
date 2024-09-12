@@ -139,11 +139,18 @@ const Wrapper = styled.div`
 	border-top: 1px solid var(--clr-grey);
 	height: calc(100vh - 5rem - 1px);
 	overflow: hidden;
+	max-width: 100%;
+	width: 100%;
 	.wrapper {
 		display: flex;
 		height: 100%;
+
+		width: 100%;
+		max-width: 100%;
+		position: relative;
 		.sidebar {
 			min-width: 200px;
+			width: 200px;
 			height: 100vh;
 			overflow-y: hidden;
 			border-right: 1px solid var(--clr-grey);

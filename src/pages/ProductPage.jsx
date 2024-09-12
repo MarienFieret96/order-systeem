@@ -17,10 +17,10 @@ const Wrapper = styled.div`
 	display: flex;
 	justify-content: center;
 	max-height: 100vh;
+	max-width: 100%;
 	.products {
-		/* display: flex;
-		justify-content: start;
-		align-items: center; */
+		width: 100%;
+		/* padding-left: 1rem; */
 	}
 `;
 

@@ -1,8 +1,16 @@
 import axios from "axios";
 
+let baseUrl = "";
+
+if (process.env.NODE_ENV === "production") {
+	baseUrl = "https://order-system-api-m5k8.onrender.com/api/v1";
+} else {
+	baseUrl = "http://localhost:5000/api/v1";
+}
+console.log(baseUrl);
+
 const customFetch = axios.create({
-	baseURL: "https://ordersysteem-api.onrender.com/api/v1",
-	// baseURL: "http://localhost:5000/api/v1",
+	baseURL: baseUrl,
 	withCredentials: true,
 	headers: {
 		"Content-type": "application/json",

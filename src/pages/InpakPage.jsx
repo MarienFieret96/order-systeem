@@ -44,7 +44,6 @@ const InpakPage = () => {
 			fetchInpakProducten();
 		} else {
 			setInpakProducten(inpakProducten);
-			console.log(inpakProducten);
 			setLoading(false);
 		}
 	}, []);

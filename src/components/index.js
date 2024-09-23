@@ -63,6 +63,7 @@ import AddInkoopProduct from "./Inkoop/AddInkoopProduct";
 import AdviesInkoopProduct from "./Inkoop/AdviesInkoopProduct";
 import UpdateInkoopProduct from "./Inkoop/UpdateInkoopProduct";
 import InkoopProduct from "./Inkoop/InkoopProduct";
+import CreateNewLeverancier from "./Inkoop/CreateNewLeverancier";
 
 export {
 	Navbar,
@@ -111,4 +112,5 @@ export {
 	AdviesInkoopProduct,
 	UpdateInkoopProduct,
 	InkoopProduct,
+	CreateNewLeverancier,
 };

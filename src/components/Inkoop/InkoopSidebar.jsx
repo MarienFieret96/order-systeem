@@ -19,7 +19,9 @@ const InkoopSidebar = ({
 					<div
 						key={item._id}
 						className={
-							inkoopIndex === index && inkoopProductStatus !== "write"
+							inkoopIndex === index &&
+							inkoopProductStatus !== "add" &&
+							inkoopProductStatus !== "create"
 								? "button active"
 								: "button"
 						}
@@ -30,6 +32,24 @@ const InkoopSidebar = ({
 					</div>
 				);
 			})}
+			<div
+				className={inkoopProductStatus === "add" ? "button active" : "button"}
+				onClick={() => setInkoopProductStatus("add")}
+			>
+				<h4>Nieuw product toevoegen</h4>
+
+				<ForwardIcon />
+			</div>
+			<div
+				className={
+					inkoopProductStatus === "create" ? "button active" : "button"
+				}
+				onClick={() => setInkoopProductStatus("create")}
+			>
+				<h4>Nieuwe leverancier toevoegen</h4>
+
+				<ForwardIcon />
+			</div>
 		</div>
 	);
 };

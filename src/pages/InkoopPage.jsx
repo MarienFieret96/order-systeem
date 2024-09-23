@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import {
 	InkoopSidebar,
@@ -6,8 +6,10 @@ import {
 	AdviesInkoopProduct,
 	UpdateInkoopProduct,
 	InkoopProduct,
+	CreateNewLeverancier,
 } from "../components";
 import { ForwardIcon } from "../assets/svg/ForwardIcon";
+import customFetch from "../utils/customFetch";
 
 const dummyData = [
 	{
@@ -49,11 +51,45 @@ const dummyData = [
 ];
 
 const InkoopPage = () => {
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(false);
-	const [inkoopProducten, setInkoopProducten] = useState(dummyData);
+	const [inkoopProducten, setInkoopProducten] = useState([]);
 	const [inkoopIndex, setInkoopIndex] = useState(0);
 	const [inkoopProductStatus, setInkoopProductStatus] = useState("read");
+
+	useEffect(() => {
+		setLoading(true);
+		const fetchInkoopProducten = async () => {
+			try {
+				const response = await customFetch.get("inkoop");
+				const inkoopProducten = response.data.inkoopProducten;
+				localStorage.setItem(
+					"inkoopProducten",
+					JSON.stringify(inkoopProducten),
+				);
+				setInkoopProducten(inkoopProducten);
+			} catch (error) {
+				setError(true);
+			} finally {
+				setLoading(false);
+			}
+		};
+		const getInkoopProducten = () => {
+			let inkoopProducten = localStorage.getItem("inkoopProducten");
+			if (inkoopProducten) {
+				return JSON.parse(localStorage.getItem("inkoopProducten"));
+			} else {
+				return [];
+			}
+		};
+		const inkoopProducten = getInkoopProducten();
+		if (inkoopProducten.length === 0) {
+			fetchInkoopProducten();
+		} else {
+			setInkoopProducten(inkoopProducten);
+			setLoading(false);
+		}
+	}, []);
 
 	if (loading) {
 		return <div>Loading....</div>;
@@ -66,7 +102,8 @@ const InkoopPage = () => {
 		if (inkoopProductStatus === "read") {
 			return (
 				<InkoopProduct
-					inkoopProduct={inkoopProducten[inkoopIndex]}
+					setInkoopProducten={setInkoopProducten}
+					inkoopProducten={inkoopProducten}
 					inkoopIndex={inkoopIndex}
 					setInkoopIndex={setInkoopIndex}
 					inkoopProductStatus={inkoopProductStatus}
@@ -75,12 +112,32 @@ const InkoopPage = () => {
 			);
 		}
 		if (inkoopProductStatus === "add") {
-			return <AddInkoopProduct />;
+			return (
+				<AddInkoopProduct
+					inkoopProducten={inkoopProducten}
+					setInkoopProducten={setInkoopProducten}
+				/>
+			);
+		}
+		if (inkoopProductStatus === "create") {
+			return (
+				<CreateNewLeverancier
+					setInkoopProductStatus={setInkoopProductStatus}
+					inkoopProducten={inkoopProducten}
+					setInkoopProducten={setInkoopProducten}
+				/>
+			);
 		}
 		if (inkoopProductStatus === "update") {
 			return <UpdateInkoopProduct />;
 		}
-		return <AdviesInkoopProduct />;
+		return (
+			<AdviesInkoopProduct
+				inkoopProducten={inkoopProducten}
+				inkoopIndex={inkoopIndex}
+				setInkoopProductStatus={setInkoopProductStatus}
+			/>
+		);
 	};
 	return (
 		<Wrapper>
@@ -178,6 +235,11 @@ const Wrapper = styled.div`
 				display: flex;
 				align-items: end;
 				justify-content: end;
+
+				svg {
+					vertical-align: top;
+					height: 32px;
+				}
 			}
 		}
 		.counter {

@@ -2,6 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import customFetch from "../utils/customFetch";
+import toast from "react-hot-toast";
 
 const LoginPage = () => {
 	const navigate = useNavigate();
@@ -9,13 +10,16 @@ const LoginPage = () => {
 		email: "",
 		password: "",
 	});
+	const [loading, setLoading] = useState(false);
 	const handleSubmit = async () => {
+		setLoading(true);
 		try {
 			const { data } = await customFetch.post("/auth/login", login);
-
 			navigate("/");
 		} catch (error) {
-			navigate("/orders");
+			toast.error("inloggen niet gelukt");
+		} finally {
+			setLoading(false);
 		}
 	};
 	return (
@@ -35,8 +39,12 @@ const LoginPage = () => {
 					onChange={(e) => setLogin({ ...login, password: e.target.value })}
 					value={login.password}
 				/>
-				<button onClick={() => handleSubmit()} className="btn btn-primary">
-					Aanmelden
+				<button
+					onClick={() => handleSubmit()}
+					className="btn btn-primary"
+					disabled={loading}
+				>
+					{loading ? "Laden..." : "Aanmelden"}
 				</button>
 			</div>
 		</Wrapper>

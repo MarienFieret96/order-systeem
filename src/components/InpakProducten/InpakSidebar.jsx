@@ -17,7 +17,7 @@ const InpakSidebar = ({
 			{inpakProducten.map((item, index) => {
 				return (
 					<div
-						key={item._id}
+						key={index}
 						className={
 							inpakIndex === index && inpakProductStatus !== "write"
 								? "button active"

@@ -12,21 +12,21 @@ const InstructieLijsten = () => {
 
 	useEffect(() => {
 		setLoading(true);
-		const fetchInstructieLijsten = async () => {
-			try {
-				const response = await customFetch.get("/instructies");
-				const instructies = response.data.instructies;
-				localStorage.setItem("instructies", JSON.stringify(instructies));
-				if (instructies.length === 0) {
-					setCreateStatus(true);
-				}
-				setInstructieLijsten(instructies);
-			} catch (error) {
-				setError(true);
-			} finally {
-				setLoading(false);
-			}
-		};
+		// const fetchInstructieLijsten = async () => {
+		// 	try {
+		// 		const response = await customFetch.get("/instructies");
+		// 		const instructies = response.data.instructies;
+		// 		localStorage.setItem("instructies", JSON.stringify(instructies));
+		// 		if (instructies.length === 0) {
+		// 			setCreateStatus(true);
+		// 		}
+		// 		setInstructieLijsten(instructies);
+		// 	} catch (error) {
+		// 		setError(true);
+		// 	} finally {
+		// 		setLoading(false);
+		// 	}
+		// };
 		const getInstructieLijsten = () => {
 			let instructies = localStorage.getItem("instructies");
 			if (instructies) {
@@ -37,7 +37,9 @@ const InstructieLijsten = () => {
 		};
 		const instructies = getInstructieLijsten();
 		if (instructies.length === 0) {
-			fetchInstructieLijsten();
+			// fetchInstructieLijsten();
+			setCreateStatus(true);
+			setLoading(false);
 		} else {
 			setInstructieLijsten(instructies);
 			setLoading(false);

@@ -18,18 +18,18 @@ const InpakPage = () => {
 
 	useEffect(() => {
 		setLoading(true);
-		const fetchInpakProducten = async () => {
-			try {
-				const response = await customFetch.get("inpakken");
-				const inpakProducten = response.data.inpakProducts;
-				localStorage.setItem("inpakProducten", JSON.stringify(inpakProducten));
-				setInpakProducten(inpakProducten);
-			} catch (error) {
-				setError(true);
-			} finally {
-				setLoading(false);
-			}
-		};
+		// const fetchInpakProducten = async () => {
+		// 	try {
+		// 		const response = await customFetch.get("inpakken");
+		// 		const inpakProducten = response.data.inpakProducts;
+		// 		localStorage.setItem("inpakProducten", JSON.stringify(inpakProducten));
+		// 		setInpakProducten(inpakProducten);
+		// 	} catch (error) {
+		// 		setError(true);
+		// 	} finally {
+		// 		setLoading(false);
+		// 	}
+		// };
 		const getInpakProducten = () => {
 			let inpakProducten = localStorage.getItem("inpakProducten");
 			if (inpakProducten) {
@@ -41,7 +41,9 @@ const InpakPage = () => {
 
 		const inpakProducten = getInpakProducten();
 		if (inpakProducten.length === 0) {
-			fetchInpakProducten();
+			// fetchInpakProducten();
+			setInpakProductStatus("create");
+			setLoading(false);
 		} else {
 			setInpakProducten(inpakProducten);
 			setLoading(false);
@@ -51,7 +53,7 @@ const InpakPage = () => {
 		return <div>Loading....</div>;
 	}
 	if (error) {
-		return <div>ER is iets mis gegaan...</div>;
+		return <div>Er is iets mis gegaan...</div>;
 	}
 
 	const renderContent = () => {
@@ -155,6 +157,7 @@ const Wrapper = styled.div`
 			flex-direction: column;
 			width: 100%;
 			gap: 1rem;
+			overflow-y: scroll;
 			.row {
 				display: flex;
 				justify-content: space-between;
@@ -189,6 +192,20 @@ const Wrapper = styled.div`
 				svg {
 					height: 24px;
 					vertical-align: top;
+				}
+			}
+			.inpak-grid {
+				margin-top: 2rem;
+				.row {
+					display: grid;
+					grid-template-columns: 1fr 1fr 1fr;
+					border-bottom: 1px solid var(--clr-grey);
+					padding: 4px;
+				}
+				.center {
+					display: flex;
+					justify-content: center;
+					align-items: center;
 				}
 			}
 			.header {

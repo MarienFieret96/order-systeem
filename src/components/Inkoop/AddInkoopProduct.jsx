@@ -4,7 +4,6 @@ import toast from "react-hot-toast";
 import customFetch from "../../utils/customFetch";
 
 const AddInkoopProduct = ({ inkoopProducten, setInkoopProducten }) => {
-	console.log(inkoopProducten);
 	const [loading, setLoading] = useState(false);
 	const { control, register, handleSubmit, reset } = useForm({
 		defaultValues: {
@@ -13,9 +12,9 @@ const AddInkoopProduct = ({ inkoopProducten, setInkoopProducten }) => {
 			leverancier: 0,
 		},
 	});
-	const onSubmit = async (data) => {
+	const onSubmit = (data) => {
 		const currentInkoopProduct = inkoopProducten[data.leverancier].producten;
-		const currentInkoopId = inkoopProducten[data.leverancier]._id;
+		// const currentInkoopId = inkoopProducten[data.leverancier]._id;
 		const replaceCommaWithDot = (str) => {
 			return str.includes(",") ? str.replace(/,/g, ".") : str;
 		};
@@ -30,34 +29,49 @@ const AddInkoopProduct = ({ inkoopProducten, setInkoopProducten }) => {
 			newInkoopProductObject,
 		];
 		const newInkoopObject = {
+			leverancier: inkoopProducten[data.leverancier].leverancier,
 			producten: newInkoopProductenArray,
 		};
 		setLoading(true);
-		try {
-			const response = await customFetch.patch(
-				`/inkoop/${currentInkoopId}`,
-				newInkoopObject,
-			);
-			const newInkoopProduct = response.data.inkoopProduct;
-			toast.success("Nieuw inkoopproduct aangemaakt");
-			reset({
-				naam: "",
-				threshold: "",
-				leverancier: 0,
-			});
-			const tempProductenArray = inkoopProducten;
-			tempProductenArray[data.leverancier] = newInkoopProduct;
-			localStorage.setItem(
-				"inkoopProducten",
-				JSON.stringify(tempProductenArray),
-			);
-			setInkoopProducten(tempProductenArray);
-		} catch (error) {
-			toast.error("Nieuw inkoopproduct aanmaken mislukt!");
-		} finally {
-			setLoading(false);
-		}
+
+		const tempProductenArray = inkoopProducten;
+		tempProductenArray[data.leverancier] = newInkoopObject;
+		localStorage.setItem("inkoopProducten", JSON.stringify(tempProductenArray));
+		setInkoopProducten(tempProductenArray);
+		toast.success("Nieuw inkoopproduct aangemaakt");
+		reset({
+			naam: "",
+			threshold: "",
+			leverancier: 0,
+		});
+		setLoading(false);
+
+		// try {
+		// 	const response = await customFetch.patch(
+		// 		`/inkoop/${currentInkoopId}`,
+		// 		newInkoopObject,
+		// 	);
+		// 	const newInkoopProduct = response.data.inkoopProduct;
+		// 	toast.success("Nieuw inkoopproduct aangemaakt");
+		// 	reset({
+		// 		naam: "",
+		// 		threshold: "",
+		// 		leverancier: 0,
+		// 	});
+		// 	const tempProductenArray = inkoopProducten;
+		// 	tempProductenArray[data.leverancier] = newInkoopProduct;
+		// 	localStorage.setItem(
+		// 		"inkoopProducten",
+		// 		JSON.stringify(tempProductenArray),
+		// 	);
+		// 	setInkoopProducten(tempProductenArray);
+		// } catch (error) {
+		// 	toast.error("Nieuw inkoopproduct aanmaken mislukt!");
+		// } finally {
+		// 	setLoading(false);
+		// }
 	};
+
 	return (
 		<div className="content-wrapper">
 			<h2>Nieuw inkoopproduct toevoegen</h2>
@@ -97,7 +111,7 @@ const AddInkoopProduct = ({ inkoopProducten, setInkoopProducten }) => {
 						>
 							{inkoopProducten.map((item, index) => {
 								return (
-									<option key={item._id} value={index}>
+									<option key={index} value={index}>
 										{item.leverancier}
 									</option>
 								);

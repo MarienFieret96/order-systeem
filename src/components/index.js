@@ -56,6 +56,7 @@ import InpakSidebar from "./InpakProducten/InpakSidebar";
 import MainInpakContent from "./InpakProducten/MainInpakContent";
 import OtherInpakContent from "./InpakProducten/OtherInpakContent";
 import UpdateInpakContent from "./InpakProducten/UpdateInpakContent";
+import InpakTable from "./InpakProducten/InpakTable";
 
 // Inkoop
 import InkoopSidebar from "./Inkoop/InkoopSidebar";
@@ -113,4 +114,5 @@ export {
 	UpdateInkoopProduct,
 	InkoopProduct,
 	CreateNewLeverancier,
+	InpakTable,
 };

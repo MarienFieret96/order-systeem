@@ -11,45 +11,6 @@ import {
 import { ForwardIcon } from "../assets/svg/ForwardIcon";
 import customFetch from "../utils/customFetch";
 
-const dummyData = [
-	{
-		_id: 123,
-		leverancier: "Adri en Zoon",
-		producten: [
-			{ naam: "Kabeljauw", voorraad: 0, threshold: 0 },
-			{ naam: "Zalmfilet E-trim 5/6", voorraad: 0, threshold: 0 },
-			{ naam: "Zalmfilet D-trim 5/6", voorraad: 0, threshold: 3 },
-			{ naam: "Zeekraal 1kg", voorraad: 0, threshold: 0 },
-			{ naam: "Lamsoor 1kg", voorraad: 0, threshold: 0 },
-			{ naam: "Mosselen Imperial 10x1", voorraad: 0, threshold: 0 },
-		],
-	},
-	{
-		_id: 234,
-		leverancier: "Oom Marien",
-		producten: [
-			{ naam: "Kabeljauw", voorraad: 0, threshold: 0 },
-			{ naam: "Zalmfilet E-trim 5/6", voorraad: 0, threshold: 0 },
-			{ naam: "Zalmfilet D-trim 5/6", voorraad: 0, threshold: 0 },
-			{ naam: "Zeekraal 1kg", voorraad: 0, threshold: 0 },
-			{ naam: "Lamsoor 1kg", voorraad: 0, threshold: 0 },
-			{ naam: "Mosselen Imperial 10x1", voorraad: 0, threshold: 0 },
-		],
-	},
-	{
-		_id: 345,
-		leverancier: "Van Barneveld",
-		producten: [
-			{ naam: "Kabeljauw", voorraad: 0, threshold: 0 },
-			{ naam: "Zalmfilet E-trim 5/6", voorraad: 0, threshold: 0 },
-			{ naam: "Zalmfilet D-trim 5/6", voorraad: 0, threshold: 0 },
-			{ naam: "Zeekraal 1kg", voorraad: 0, threshold: 0 },
-			{ naam: "Lamsoor 1kg", voorraad: 0, threshold: 0 },
-			{ naam: "Mosselen Imperial 10x1", voorraad: 0, threshold: 0 },
-		],
-	},
-];
-
 const InkoopPage = () => {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(false);
@@ -59,21 +20,21 @@ const InkoopPage = () => {
 
 	useEffect(() => {
 		setLoading(true);
-		const fetchInkoopProducten = async () => {
-			try {
-				const response = await customFetch.get("inkoop");
-				const inkoopProducten = response.data.inkoopProducten;
-				localStorage.setItem(
-					"inkoopProducten",
-					JSON.stringify(inkoopProducten),
-				);
-				setInkoopProducten(inkoopProducten);
-			} catch (error) {
-				setError(true);
-			} finally {
-				setLoading(false);
-			}
-		};
+		// const fetchInkoopProducten = async () => {
+		// 	try {
+		// 		const response = await customFetch.get("inkoop");
+		// 		const inkoopProducten = response.data.inkoopProducten;
+		// 		localStorage.setItem(
+		// 			"inkoopProducten",
+		// 			JSON.stringify(inkoopProducten),
+		// 		);
+		// 		setInkoopProducten(inkoopProducten);
+		// 	} catch (error) {
+		// 		setError(true);
+		// 	} finally {
+		// 		setLoading(false);
+		// 	}
+		// };
 		const getInkoopProducten = () => {
 			let inkoopProducten = localStorage.getItem("inkoopProducten");
 			if (inkoopProducten) {
@@ -84,7 +45,9 @@ const InkoopPage = () => {
 		};
 		const inkoopProducten = getInkoopProducten();
 		if (inkoopProducten.length === 0) {
-			fetchInkoopProducten();
+			// fetchInkoopProducten();
+			setInkoopProductStatus("create");
+			setLoading(false);
 		} else {
 			setInkoopProducten(inkoopProducten);
 			setLoading(false);

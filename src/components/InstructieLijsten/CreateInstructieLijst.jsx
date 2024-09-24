@@ -19,26 +19,40 @@ const CreateInstructieLijst = ({
 		},
 	});
 
-	const onSubmit = async (data) => {
+	const onSubmit = (data) => {
 		setLoading(true);
-		try {
-			const response = await customFetch.post("/instructies", data);
-			const newInstructie = response.data.instructie;
-			toast.success(`${newInstructie.titel} toegevoegd!`);
-			reset({
-				titel: "",
-				benodigdheden: [{ benodigdheid: "" }],
-				instructies: [{ instructie: "" }],
-				bereidingstijd: "",
-			});
-			const newInstructieLijsten = [...instructieLijsten, newInstructie];
-			localStorage.setItem("instructies", JSON.stringify(newInstructieLijsten));
-			setInstructieLijsten(newInstructieLijsten);
-		} catch (error) {
-			toast.error("Instructielijst aanmaken niet gelukt!");
-		} finally {
-			setLoading(false);
-		}
+
+		const newInstructieLijsten = [...instructieLijsten, data];
+		localStorage.setItem("instructies", JSON.stringify(newInstructieLijsten));
+		setInstructieLijsten(newInstructieLijsten);
+
+		reset({
+			titel: "",
+			benodigdheden: [{ benodigdheid: "" }],
+			instructies: [{ instructie: "" }],
+			bereidingstijd: "",
+		});
+		toast.success(`${data.titel} toegevoegd!`);
+		setLoading(false);
+
+		// try {
+		// 	const response = await customFetch.post("/instructies", data);
+		// 	const newInstructie = response.data.instructie;
+		// 	toast.success(`${newInstructie.titel} toegevoegd!`);
+		// 	reset({
+		// 		titel: "",
+		// 		benodigdheden: [{ benodigdheid: "" }],
+		// 		instructies: [{ instructie: "" }],
+		// 		bereidingstijd: "",
+		// 	});
+		// 	const newInstructieLijsten = [...instructieLijsten, newInstructie];
+		// 	localStorage.setItem("instructies", JSON.stringify(newInstructieLijsten));
+		// 	setInstructieLijsten(newInstructieLijsten);
+		// } catch (error) {
+		// 	toast.error("Instructielijst aanmaken niet gelukt!");
+		// } finally {
+		// 	setLoading(false);
+		// }
 	};
 	return (
 		<div className="content-wrapper">

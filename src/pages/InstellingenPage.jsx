@@ -11,7 +11,9 @@ const Reset = () => {
 		navigate("/");
 	};
 	const handleReset = () => {
-		localStorage.clear();
+		localStorage.removeItem("all_categories");
+		localStorage.removeItem("categories");
+		localStorage.removeItem("products");
 		location.reload();
 	};
 	return (

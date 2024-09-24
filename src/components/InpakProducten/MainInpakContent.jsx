@@ -15,6 +15,7 @@ const MainInpakContent = ({
 	handleEditClick,
 }) => {
 	const [deleteModal, setDeleteModal] = useState(false);
+	console.log(data);
 	const { inpakdatum, houdbaarheidsdatum, werknemer, aantal, afval } = data;
 
 	// const handleAnnulering = () => {

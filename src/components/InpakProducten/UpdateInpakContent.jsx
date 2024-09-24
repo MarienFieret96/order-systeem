@@ -15,7 +15,8 @@ const UpdateInpakContent = ({
 	inpakProductDataIndex,
 }) => {
 	const [loading, setLoading] = useState(false);
-	const { naam, _id, data } = inpakProduct;
+	const { naam, data } = inpakProduct;
+	console.log(inpakProducten);
 	let oldValues = data;
 	const { control, register, handleSubmit, reset, setValue } = useForm({
 		defaultValues: {
@@ -47,28 +48,39 @@ const UpdateInpakContent = ({
 			toastValue = "toegevoegd";
 		}
 
-		try {
-			const response = await customFetch.patch(
-				`/inpakken/${_id}`,
-				newInpakProductObject,
-			);
-			const newInpakProduct = response.data.inpakProduct;
-			toast.success(`${newInpakProduct.naam} ${toastValue}!`);
+		let InpakProductenToUpdate = inpakProducten;
+		InpakProductenToUpdate[inpakIndex] = newInpakProductObject;
+		localStorage.setItem(
+			"inpakProducten",
+			JSON.stringify(InpakProductenToUpdate),
+		);
+		setInpakProducten(InpakProductenToUpdate);
+		setInpakProductStatus("read");
 
-			let InpakProductenToUpdate = inpakProducten;
-			InpakProductenToUpdate[inpakIndex] = newInpakProduct;
+		toast.success(`${newInpakProductObject.naam} ${toastValue}!`);
+		setLoading(false);
+		// try {
+		// 	const response = await customFetch.patch(
+		// 		`/inpakken/${_id}`,
+		// 		newInpakProductObject,
+		// 	);
+		// 	const newInpakProduct = response.data.inpakProduct;
+		// 	toast.success(`${newInpakProduct.naam} ${toastValue}!`);
 
-			localStorage.setItem(
-				"inpakProducten",
-				JSON.stringify(InpakProductenToUpdate),
-			);
-			setInpakProducten(InpakProductenToUpdate);
-			setInpakProductStatus("read");
-		} catch (error) {
-			toast.error("Nieuwe waardes opslaan niet gelukt");
-		} finally {
-			setLoading(false);
-		}
+		// 	let InpakProductenToUpdate = inpakProducten;
+		// 	InpakProductenToUpdate[inpakIndex] = newInpakProduct;
+
+		// 	localStorage.setItem(
+		// 		"inpakProducten",
+		// 		JSON.stringify(InpakProductenToUpdate),
+		// 	);
+		// 	setInpakProducten(InpakProductenToUpdate);
+		// 	setInpakProductStatus("read");
+		// } catch (error) {
+		// 	toast.error("Nieuwe waardes opslaan niet gelukt");
+		// } finally {
+		// 	setLoading(false);
+		// }
 	};
 
 	useEffect(() => {

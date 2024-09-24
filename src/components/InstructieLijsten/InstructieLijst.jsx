@@ -11,34 +11,51 @@ const InstructieLijst = ({
 	instructieLijsten,
 	setInstructieLijsten,
 }) => {
-	const { titel, benodigdheden, instructies, bereidingstijd, _id } =
+	const { titel, benodigdheden, instructies, bereidingstijd } =
 		instructieLijsten[instructieIndex];
 	const [deleteModal, setDeleteModal] = useState(false);
 
 	const deleteInstructieLijst = async () => {
-		try {
-			await customFetch.delete(`/instructies/${_id}`);
-			toast.success(`${titel} verwijderd`);
-			const instructies = JSON.parse(localStorage.getItem("instructies"));
-			const updatedInstructies = instructies.filter(
-				(item, index) => index !== instructieIndex,
-			);
+		toast.success(`${titel} verwijderd`);
 
-			localStorage.setItem("instructies", JSON.stringify(updatedInstructies));
-			if (updatedInstructies.length === instructieIndex) {
-				let newInstructieIndex = instructieIndex - 1;
-				if (newInstructieIndex < 0) {
-					setCreateStatus(true);
-				} else {
-					setInstructieIndex(instructieIndex - 1);
-				}
+		const instructies = JSON.parse(localStorage.getItem("instructies"));
+		const updatedInstructies = instructies.filter(
+			(item, index) => index !== instructieIndex,
+		);
+		localStorage.setItem("instructies", JSON.stringify(updatedInstructies));
+		if (updatedInstructies.length === instructieIndex) {
+			let newInstructieIndex = instructieIndex - 1;
+			if (newInstructieIndex < 0) {
+				setCreateStatus(true);
+			} else {
+				setInstructieIndex(instructieIndex - 1);
 			}
-			setInstructieLijsten(updatedInstructies);
-		} catch (error) {
-			toast.error("verwijderen mislukt!");
-		} finally {
-			setDeleteModal(false);
 		}
+		setInstructieLijsten(updatedInstructies);
+		setDeleteModal(false);
+		// try {
+		// 	await customFetch.delete(`/instructies/${_id}`);
+		// 	toast.success(`${titel} verwijderd`);
+		// 	const instructies = JSON.parse(localStorage.getItem("instructies"));
+		// 	const updatedInstructies = instructies.filter(
+		// 		(item, index) => index !== instructieIndex,
+		// 	);
+
+		// 	localStorage.setItem("instructies", JSON.stringify(updatedInstructies));
+		// 	if (updatedInstructies.length === instructieIndex) {
+		// 		let newInstructieIndex = instructieIndex - 1;
+		// 		if (newInstructieIndex < 0) {
+		// 			setCreateStatus(true);
+		// 		} else {
+		// 			setInstructieIndex(instructieIndex - 1);
+		// 		}
+		// 	}
+		// 	setInstructieLijsten(updatedInstructies);
+		// } catch (error) {
+		// 	toast.error("verwijderen mislukt!");
+		// } finally {
+		// 	setDeleteModal(false);
+		// }
 	};
 
 	const handleAnnulering = () => {

@@ -26,35 +26,50 @@ const CreateInpakContent = ({
 	const onSubmit = async (data) => {
 		const newInpakObject = {
 			naam: data.naam,
-			data: {
-				aantal: data.aantal,
-				afval: data.afval,
-				houdbaarheidsdatum: data.houdbaarheidsdatum,
-				inpakdatum: data.inpakdatum,
-				werknemer: data.werknemer,
-			},
+			data: [
+				{
+					aantal: data.aantal,
+					afval: data.afval,
+					houdbaarheidsdatum: data.houdbaarheidsdatum,
+					inpakdatum: data.inpakdatum,
+					werknemer: data.werknemer,
+				},
+			],
 		};
 		setLoading(true);
-		try {
-			const response = await customFetch.post("/inpakken", newInpakObject);
-			const newInpakProduct = response.data.inpakProduct;
-			toast.success(`${newInpakProduct.naam} aangemaakt!`);
-			reset({
-				naam: "",
-				werknemer: "Gijsbert",
-				inpakdatum: new Date(),
-				houdbaarheidsdatum: new Date(),
-				aantal: "",
-				afval: 0,
-			});
-			const newInpakProducten = [...inpakProducten, newInpakProduct];
-			localStorage.setItem("inpakProducten", JSON.stringify(newInpakProducten));
-			setInpakProducten(newInpakProducten);
-		} catch (error) {
-			toast.error("Inpakproduct aanmaken niet gelukt!");
-		} finally {
-			setLoading(false);
-		}
+		const newInpakProducten = [...inpakProducten, newInpakObject];
+		localStorage.setItem("inpakProducten", JSON.stringify(newInpakProducten));
+		setInpakProducten(newInpakProducten);
+		reset({
+			naam: "",
+			werknemer: "Gijsbert",
+			inpakdatum: new Date(),
+			houdbaarheidsdatum: new Date(),
+			aantal: "",
+			afval: 0,
+		});
+		toast.success(`Nieuw product aangemaakt!`);
+		setLoading(false);
+		// try {
+		// 	const response = await customFetch.post("/inpakken", newInpakObject);
+		// 	const newInpakProduct = response.data.inpakProduct;
+		// 	toast.success(`${newInpakProduct.naam} aangemaakt!`);
+		// 	reset({
+		// 		naam: "",
+		// 		werknemer: "Gijsbert",
+		// 		inpakdatum: new Date(),
+		// 		houdbaarheidsdatum: new Date(),
+		// 		aantal: "",
+		// 		afval: 0,
+		// 	});
+		// 	const newInpakProducten = [...inpakProducten, newInpakProduct];
+		// 	localStorage.setItem("inpakProducten", JSON.stringify(newInpakProducten));
+		// 	setInpakProducten(newInpakProducten);
+		// } catch (error) {
+		// 	toast.error("Inpakproduct aanmaken niet gelukt!");
+		// } finally {
+		// 	setLoading(false);
+		// }
 	};
 
 	return (

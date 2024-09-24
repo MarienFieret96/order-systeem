@@ -10,7 +10,7 @@ const CreateNewLeverancier = ({
 	const [leverancier, setLeverancier] = useState("");
 	const [loading, setLoading] = useState(false);
 
-	const handleClick = async () => {
+	const handleClick = () => {
 		if (!leverancier) return;
 		const newLeverancierObject = {
 			leverancier: leverancier,
@@ -18,19 +18,25 @@ const CreateNewLeverancier = ({
 		};
 
 		setLoading(true);
-		try {
-			const response = await customFetch.post("/inkoop", newLeverancierObject);
-			const newLeverancier = response.data.newLeverancier;
-			toast.success("Nieuwe leverancier aangemaakt!");
-			setLeverancier("");
-			const newLeveranciers = [...inkoopProducten, newLeverancier];
-			localStorage.setItem("inkoopProducten", JSON.stringify(newLeveranciers));
-			setInkoopProducten(newLeveranciers);
-		} catch (error) {
-			toast.error("Nieuwe leverancier aanmaken mislukt!");
-		} finally {
-			setLoading(false);
-		}
+		// try {
+		// 	const response = await customFetch.post("/inkoop", newLeverancierObject);
+		// 	const newLeverancier = response.data.newLeverancier;
+		// 	toast.success("Nieuwe leverancier aangemaakt!");
+		// 	setLeverancier("");
+		// 	const newLeveranciers = [...inkoopProducten, newLeverancier];
+		// 	localStorage.setItem("inkoopProducten", JSON.stringify(newLeveranciers));
+		// 	setInkoopProducten(newLeveranciers);
+		// } catch (error) {
+		// 	toast.error("Nieuwe leverancier aanmaken mislukt!");
+		// } finally {
+		// 	setLoading(false);
+		// }
+		const newLeveranciers = [...inkoopProducten, newLeverancierObject];
+		localStorage.setItem("inkoopProducten", JSON.stringify(newLeveranciers));
+		setInkoopProducten(newLeveranciers);
+		toast.success("Nieuwe leverancier aangemaakt!");
+		setLeverancier("");
+		setLoading(false);
 	};
 
 	return (

@@ -16,7 +16,7 @@ const OtherInpakContent = ({ data, handleEditClick }) => {
 			{data.map((item, index) => {
 				if (index === 0 || index > 5) return;
 				return (
-					<div className="grid" key={item._id}>
+					<div className="grid" key={index}>
 						<DateFormatDayMonth datum={item.inpakdatum} />
 						<DateFormatDayMonth datum={item.houdbaarheidsdatum} />
 						<p>{item.aantal}</p>

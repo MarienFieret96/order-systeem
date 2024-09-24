@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-import { MainInpakContent, OtherInpakContent } from "../../components";
+import {
+	MainInpakContent,
+	OtherInpakContent,
+	InpakTable,
+} from "../../components";
 const InpakContent = ({
 	inpakProduct,
 	setInpakProducten,
@@ -8,7 +12,8 @@ const InpakContent = ({
 	setInpakProductStatus,
 	setInpakProductDataIndex,
 }) => {
-	const { naam, data, _id } = inpakProduct;
+	console.log(inpakProduct);
+	const { naam, data } = inpakProduct;
 	const [moreData, setMoreData] = useState(false);
 
 	const handleEditClick = (i) => {
@@ -21,7 +26,6 @@ const InpakContent = ({
 			<MainInpakContent
 				data={data[0]}
 				naam={naam}
-				id={_id}
 				setInpakProducten={setInpakProducten}
 				inpakIndex={inpakIndex}
 				setInpakIndex={setInpakIndex}
@@ -29,7 +33,10 @@ const InpakContent = ({
 				handleEditClick={handleEditClick}
 			/>
 			{moreData && (
-				<OtherInpakContent data={data} handleEditClick={handleEditClick} />
+				<>
+					<OtherInpakContent data={data} handleEditClick={handleEditClick} />
+					<InpakTable data={data} />
+				</>
 			)}
 
 			<div className="row">

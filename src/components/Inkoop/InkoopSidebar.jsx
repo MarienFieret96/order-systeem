@@ -17,7 +17,7 @@ const InkoopSidebar = ({
 			{inkoopProducten.map((item, index) => {
 				return (
 					<div
-						key={item._id}
+						key={index}
 						className={
 							inkoopIndex === index &&
 							inkoopProductStatus !== "add" &&

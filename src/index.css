@@ -43,6 +43,7 @@ textarea {
 	font-size: 0.75rem;
 	border-radius: var(--radius);
 	border: 1px solid silver;
+	width: 100%;
 }
 
 /* Chrome, Safari, Edge, Opera */

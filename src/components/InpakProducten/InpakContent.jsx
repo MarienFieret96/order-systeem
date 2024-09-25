@@ -35,7 +35,7 @@ const InpakContent = ({
 			{moreData && (
 				<>
 					<OtherInpakContent data={data} handleEditClick={handleEditClick} />
-					<InpakTable data={data} />
+					<InpakTable data={data} inpakIndex={inpakIndex} />
 				</>
 			)}
 

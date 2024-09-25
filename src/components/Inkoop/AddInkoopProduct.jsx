@@ -3,7 +3,12 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import customFetch from "../../utils/customFetch";
 
-const AddInkoopProduct = ({ inkoopProducten, setInkoopProducten }) => {
+const AddInkoopProduct = ({
+	inkoopProducten,
+	setInkoopProducten,
+	setInkoopIndex,
+	setInkoopProductStatus,
+}) => {
 	const [loading, setLoading] = useState(false);
 	const { control, register, handleSubmit, reset } = useForm({
 		defaultValues: {
@@ -120,7 +125,11 @@ const AddInkoopProduct = ({ inkoopProducten, setInkoopProducten }) => {
 					</div>
 				</div>
 				<div className="row">
-					<button type="button" className="btn btn-secondary">
+					<button
+						type="button"
+						className="btn btn-secondary"
+						onClick={() => setInkoopProductStatus("read")}
+					>
 						Annuleren
 					</button>
 					<button type="submit" className="btn btn-primary">

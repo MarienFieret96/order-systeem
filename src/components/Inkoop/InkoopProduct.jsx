@@ -33,6 +33,7 @@ const InkoopProduct = ({
 	inkoopProductStatus,
 	setInkoopIndex,
 	setInkoopProductStatus,
+	setInkoopProductIndex,
 }) => {
 	const { leverancier, producten } = inkoopProducten[inkoopIndex];
 	const [editStatus, setEditStatus] = useState(false);
@@ -96,6 +97,11 @@ const InkoopProduct = ({
 		}
 	};
 
+	const handleClick = (index) => {
+		setInkoopProductIndex(index);
+		setInkoopProductStatus("update");
+	};
+
 	return (
 		<div className="content-wrapper inkoop">
 			<h2>{leverancier}</h2>
@@ -125,7 +131,10 @@ const InkoopProduct = ({
 							<>
 								<h4 className="center">{voorraad}</h4>
 								<h4 className="center">{threshold}</h4>
-								<div className="svg-container">
+								<div
+									className="svg-container"
+									onClick={() => handleClick(index)}
+								>
 									<EditIcon />
 								</div>
 							</>

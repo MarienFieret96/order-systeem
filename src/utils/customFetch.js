@@ -7,7 +7,7 @@ if (process.env.NODE_ENV === "production") {
 } else {
 	baseUrl = "http://localhost:5000/api/v1";
 }
-console.log(baseUrl);
+// console.log(baseUrl);
 
 const customFetch = axios.create({
 	baseURL: baseUrl,

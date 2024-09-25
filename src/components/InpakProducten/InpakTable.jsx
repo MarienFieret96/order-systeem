@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const InpakTable = ({ data }) => {
+const InpakTable = ({ data, inpakIndex }) => {
 	const [currentWeek, setCurrentWeek] = useState(0);
 	const [tableData, setTableData] = useState([]);
 	useEffect(() => {
@@ -53,7 +53,7 @@ const InpakTable = ({ data }) => {
 			};
 		});
 		setTableData(totalData);
-	}, []);
+	}, [inpakIndex]);
 
 	return (
 		<div className="inpak-grid">

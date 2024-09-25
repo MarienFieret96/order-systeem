@@ -57,7 +57,10 @@ const AdviesInkoopProduct = ({
 							voorraad={item.voorraad}
 							threshold={item.threshold}
 						/>
-						<input type="checkbox" name="" id="" />
+						<div></div>
+						<div className="center">
+							<input type="checkbox" name="" id="" />
+						</div>
 					</div>
 				);
 			})}

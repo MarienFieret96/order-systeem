@@ -17,6 +17,7 @@ const InkoopPage = () => {
 	const [inkoopProducten, setInkoopProducten] = useState([]);
 	const [inkoopIndex, setInkoopIndex] = useState(0);
 	const [inkoopProductStatus, setInkoopProductStatus] = useState("read");
+	const [inkoopProductIndex, setInkoopProductIndex] = useState(0);
 
 	useEffect(() => {
 		setLoading(true);
@@ -71,6 +72,7 @@ const InkoopPage = () => {
 					setInkoopIndex={setInkoopIndex}
 					inkoopProductStatus={inkoopProductStatus}
 					setInkoopProductStatus={setInkoopProductStatus}
+					setInkoopProductIndex={setInkoopProductIndex}
 				/>
 			);
 		}
@@ -79,6 +81,8 @@ const InkoopPage = () => {
 				<AddInkoopProduct
 					inkoopProducten={inkoopProducten}
 					setInkoopProducten={setInkoopProducten}
+					setInkoopIndex={setInkoopIndex}
+					setInkoopProductStatus={setInkoopProductStatus}
 				/>
 			);
 		}
@@ -92,7 +96,15 @@ const InkoopPage = () => {
 			);
 		}
 		if (inkoopProductStatus === "update") {
-			return <UpdateInkoopProduct />;
+			return (
+				<UpdateInkoopProduct
+					setInkoopProductStatus={setInkoopProductStatus}
+					inkoopProducten={inkoopProducten}
+					setInkoopProducten={setInkoopProducten}
+					inkoopIndex={inkoopIndex}
+					inkoopProductIndex={inkoopProductIndex}
+				/>
+			);
 		}
 		return (
 			<AdviesInkoopProduct
@@ -192,6 +204,11 @@ const Wrapper = styled.div`
 			.grid {
 				display: grid;
 				grid-template-columns: 3fr 2fr 1fr 0.5fr;
+				.center {
+					input {
+						height: 100%;
+					}
+				}
 			}
 
 			.svg-container {

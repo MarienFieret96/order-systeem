@@ -9,6 +9,7 @@ const CreateInstructieLijst = ({
 	setInstructieLijsten,
 	instructieLijsten,
 }) => {
+	console.log(instructieLijsten);
 	const [loading, setLoading] = useState(false);
 	const { register, handleSubmit, control, reset } = useForm({
 		defaultValues: {
@@ -54,6 +55,11 @@ const CreateInstructieLijst = ({
 		// 	setLoading(false);
 		// }
 	};
+
+	const handleAnnulering = () => {
+		if (instructieLijsten.length === 0) return;
+		setCreateStatus(false);
+	};
 	return (
 		<div className="content-wrapper">
 			<h2>Nieuwe instructielijst</h2>
@@ -80,7 +86,7 @@ const CreateInstructieLijst = ({
 					<button
 						className="btn btn-secondary"
 						type="button"
-						onClick={() => setCreateStatus(false)}
+						onClick={() => handleAnnulering()}
 					>
 						Annuleren
 					</button>

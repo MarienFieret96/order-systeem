@@ -129,7 +129,6 @@ const Wrapper = styled.div`
 	.wrapper {
 		display: flex;
 		height: 100%;
-
 		width: 100%;
 		max-width: 100%;
 		position: relative;
@@ -137,7 +136,7 @@ const Wrapper = styled.div`
 			min-width: 200px;
 			width: 200px;
 			height: 100vh;
-			overflow-y: hidden;
+			overflow-y: scroll;
 			border-right: 1px solid var(--clr-grey);
 			.button {
 				display: flex;
@@ -150,6 +149,9 @@ const Wrapper = styled.div`
 			.active {
 				background-color: var(--clr-light-grey);
 			}
+		}
+		.sidebar::-webkit-scrollbar {
+			width: 0;
 		}
 		.content-wrapper {
 			padding: 2rem;
@@ -177,7 +179,7 @@ const Wrapper = styled.div`
 						height: 32px;
 					}
 				}
-				button {
+				.btn {
 					width: 100%;
 				}
 			}

@@ -1,5 +1,6 @@
 const products_reducer = (state, action) => {
 	if (action.type === "GET_PRODUCTS_BEGIN") {
+		console.log("get products");
 		return { ...state, loading: true };
 	}
 	if (action.type === "GET_PRODUCTS_SUCCESS") {
@@ -39,6 +40,12 @@ const products_reducer = (state, action) => {
 			error: false,
 		};
 	}
+	if (action.type === "CREATE_PRODUCT_ERROR") {
+		return {
+			...state,
+			loading: false,
+		};
+	}
 	if (action.type === "UPDATE_PRODUCT_START") {
 		return { ...state, loading: true };
 	}
@@ -49,6 +56,12 @@ const products_reducer = (state, action) => {
 			products: updatedProducts,
 			loading: false,
 			error: false,
+		};
+	}
+	if (action.type === "UPDATE_PRODUCT_ERROR") {
+		return {
+			...state,
+			loading: false,
 		};
 	}
 	if (action.type === "DELETE_PRODUCT_START") {

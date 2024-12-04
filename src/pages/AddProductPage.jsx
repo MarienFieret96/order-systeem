@@ -38,7 +38,7 @@ const AddProductPage = ({ update }) => {
 	const navigate = useNavigate();
 	const { createProduct, updateProduct, loading, state_product } =
 		useProductsContext();
-
+	console.log(loading);
 	const resetState = () => {
 		setOpties([]);
 		setChecks([]);
@@ -49,6 +49,7 @@ const AddProductPage = ({ update }) => {
 	};
 
 	const onSubmit = (data) => {
+		console.log(data);
 		const perStuk = data.perStuk === "stuk";
 		const newProductObject = {
 			naam: data.naam,
@@ -186,7 +187,7 @@ const AddProductPage = ({ update }) => {
 						<option value="adri">Adri</option>
 						<option value="marien">Oom Marien</option>
 						<option value="volfood">Volfood</option>
-						<option value="other">Andere Leverancier</option>
+						<option value="overig">Andere Leverancier</option>
 					</select>
 					<select {...register("categorie")}>
 						{categorieen.map((item, index) => {

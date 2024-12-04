@@ -3,7 +3,7 @@ import { allergenenArray } from "../../utils/constants";
 import { Checkbox } from "../../components";
 
 const AddAlergenen = ({ allergeen, setAllergeen, update }) => {
-	const [allergenen, setAllergenen] = useState([]);
+	const [allergenen, setAllergenen] = useState(allergenenArray);
 
 	useEffect(() => {
 		if (update) {
@@ -18,10 +18,8 @@ const AddAlergenen = ({ allergeen, setAllergeen, update }) => {
 				}
 			});
 			setAllergenen(updateAllergenenArray);
-		} else {
-			setAllergenen(allergenenArray);
 		}
-	}, [allergeen]);
+	}, []);
 
 	const updateCheckStatusAllergeen = (index) => {
 		const tempAllergeenObject = allergenen.map((item, currentIndex) => {

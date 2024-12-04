@@ -292,6 +292,7 @@ export const ProductsProvider = ({ children }) => {
 			fetchProducts();
 			return true;
 		} catch (error) {
+			dispatch({ type: "CREATE_PRODUCT_ERROR" });
 			toast.error("Product aanmaken niet gelukt");
 			return false;
 		}
@@ -310,6 +311,7 @@ export const ProductsProvider = ({ children }) => {
 			fetchProducts();
 			return true;
 		} catch (error) {
+			dispatch({ type: "UPDATE_PRODUCT_ERROR" });
 			toast.error("Product aanpassen niet gelukt");
 			return false;
 		}

@@ -24,7 +24,7 @@ const AddWine = ({ wijn, setWijn }) => {
 		});
 	};
 	useEffect(() => {
-		const tempObject = processArray(categories[0]);
+		const tempObject = processArray(categories[8]);
 		setWijnen(tempObject);
 	}, [wijn]);
 

@@ -1,42 +1,21 @@
 import React, { useLayoutEffect, useState } from "react";
 import styled from "styled-components";
 import { DropdownIcon } from "../../assets/svg/DropdownIcon";
-
-const WeightedOrderItem = ({ item }) => {
-	const { hoeveelheid, delen } = item;
-	return (
-		<h2>
-			{delen} x {hoeveelheid} gram
-		</h2>
-	);
-};
-
-const CountedOrderItem = ({ item }) => {
-	const { aantal, stuks } = item;
-	return (
-		<h2>
-			{aantal} x {stuks} stuks
-		</h2>
-	);
-};
+import toast from "react-hot-toast";
+import SingleProductView from "./SingleProductView";
 
 const OrderItem = ({ item }) => {
 	const [open, setOpen] = useState(false);
-	const { gewicht, naam, stukPrijs, totalAmount } = item;
+	const { naam, productDetails, totaal } = item;
 
-	const lookup = {
-		stuk: CountedOrderItem,
-		gewicht: WeightedOrderItem,
-	};
-
-	const AmountComponent = lookup[stukPrijs];
+	let stukPrijs = productDetails[0].prijs.perStuk;
 
 	return (
 		<div className="container" onClick={() => setOpen(!open)}>
 			<div className="info-wrapper">
 				<h1>
-					{naam} - {totalAmount}
-					{stukPrijs === "gewicht" ? " gram" : "x"}
+					{naam} - {totaal}
+					{!stukPrijs ? " gram" : "x"}
 				</h1>
 
 				<div className="icon">
@@ -45,9 +24,10 @@ const OrderItem = ({ item }) => {
 			</div>
 			{open && (
 				<div className="extra-info">
-					{gewicht.map((item, index) => {
-						return <AmountComponent key={index} item={item} />;
-					})}
+					<SingleProductView
+						productDetails={productDetails}
+						stukPrijs={stukPrijs}
+					/>
 				</div>
 			)}
 		</div>
@@ -55,6 +35,7 @@ const OrderItem = ({ item }) => {
 };
 
 const OrderItemsByProduct = ({ orderByProduct }) => {
+	console.log(orderByProduct);
 	return (
 		<div className="wrapper">
 			{orderByProduct.map((item, index) => {
@@ -73,8 +54,7 @@ const OrderByProduct = ({ orders }) => {
 		createOrderItemsArray();
 	}, []);
 	useLayoutEffect(() => {
-		const tempObject = createNewDataset();
-		const newObject = getTotalsAndSort(tempObject);
+		const newObject = createNewDataset();
 		setOrderByProduct(newObject);
 	}, [orderItems]);
 
@@ -83,33 +63,8 @@ const OrderByProduct = ({ orders }) => {
 		orderArray.forEach((itemArray) => {
 			itemArray.orderItems.forEach((item) => orderItemsArray.push(item));
 		});
+		console.log(orderItemsArray);
 		setOrderItems(orderItemsArray);
-	};
-
-	const getTotalsAndSort = (data) => {
-		const newArray = [];
-		data.forEach((item) => {
-			let totalAmount = 0;
-			if (item.stukPrijs === "gewicht") {
-				item.gewicht.sort((a, b) => b.hoeveelheid - a.hoeveelheid);
-				item.gewicht.forEach((weightItem) => {
-					let tempAmount = weightItem.hoeveelheid * weightItem.delen;
-					totalAmount += tempAmount;
-				});
-			} else {
-				item.gewicht.sort((a, b) => b.stuks - a.stuks);
-				item.gewicht.forEach((countItem) => {
-					let tempCount = countItem.stuks * countItem.aantal;
-					totalAmount += tempCount;
-				});
-			}
-			let newObject = {
-				...item,
-				totalAmount,
-			};
-			newArray.push(newObject);
-		});
-		return newArray;
 	};
 
 	const createNewDataset = () => {
@@ -117,79 +72,48 @@ const OrderByProduct = ({ orders }) => {
 		orderItems.forEach((item) => {
 			const tempItem = itemList.some((itemList) => itemList.naam === item.naam);
 			if (tempItem) {
-				itemList.map((productObject, index) => {
+				itemList.forEach((productObject, index) => {
 					if (productObject.naam !== item.naam) return;
-					if (productObject.stukPrijs === "gewicht") {
-						const temporaryObject = productObject.gewicht;
-						const tempValue = temporaryObject.some(
-							(temporaryObject) =>
-								temporaryObject.hoeveelheid === item.gewicht.hoeveelheid,
-						);
-						if (tempValue) {
-							temporaryObject.map((temporaryItem, i) => {
-								if (temporaryItem.hoeveelheid !== item.gewicht.hoeveelheid)
-									return;
-								let newAmount = temporaryItem.delen + item.gewicht.delen;
-
-								itemList[index].gewicht[i] = {
-									...itemList[index].gewicht[i],
-									delen: newAmount,
-								};
-							});
-						} else {
-							itemList[index].gewicht.push(item.gewicht);
-						}
+					const tempProductObject = {
+						aantal: item.aantal,
+						delen: item.delen,
+						gewicht: item.gewicht,
+						opties: item.opties,
+						prijs: item.prijs,
+						productOpmerking: item.productOpmerking,
+					};
+					itemList[index].productDetails.push(tempProductObject);
+					if (item.prijs.perStuk) {
+						itemList[index].totaal += item.aantal;
 					} else {
-						const temporaryObject = productObject.gewicht;
-						const tempValue = temporaryObject.some(
-							(temporaryObject) => temporaryObject.stuks === item.stuks,
-						);
-						if (tempValue) {
-							temporaryObject.map((temporaryItem, i) => {
-								if (temporaryItem.stuks !== item.stuks) return;
-								let newAmount = (temporaryItem.aantal += 1);
-								itemList[index].gewicht[i] = {
-									...itemList[index].gewicht[i],
-									aantal: newAmount,
-								};
-							});
-						} else {
-							let newObject = {
-								stuks: item.stuks,
-								aantal: 1,
-							};
-							itemList[index].gewicht.push(newObject);
-						}
+						itemList[index].totaal += item.gewicht;
 					}
 				});
 			} else {
-				let tempObject = {};
-				if (item.stukPrijs === "gewicht") {
-					tempObject = {
-						naam: item.naam,
-						stukPrijs: item.stukPrijs,
-						gewicht: [
-							{
-								hoeveelheid: item.gewicht.hoeveelheid,
-								delen: item.gewicht.delen,
-							},
-						],
-					};
+				let total = 0;
+				if (item.prijs.perStuk) {
+					total = item.aantal;
 				} else {
-					tempObject = {
-						naam: item.naam,
-						stukPrijs: item.stukPrijs,
-						gewicht: [
-							{
-								stuks: item.stuks,
-								aantal: 1,
-							},
-						],
-					};
+					total = item.gewicht;
 				}
+				const tempObject = {
+					naam: item.naam,
+					productDetails: [
+						{
+							aantal: item.aantal,
+							delen: item.delen,
+							gewicht: item.gewicht,
+							opties: item.opties,
+							prijs: item.prijs,
+							productOpmerking: item.productOpmerking,
+						},
+					],
+					totaal: total,
+				};
 				itemList.push(tempObject);
 			}
 		});
+		console.log(itemList);
 		return itemList;
 	};
 

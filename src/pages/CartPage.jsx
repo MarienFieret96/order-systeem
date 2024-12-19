@@ -51,6 +51,7 @@ const CartPage = () => {
 		date.setMinutes(minute);
 		return date;
 	};
+	console.log(cart);
 
 	const addProduct = () => {
 		if (!order_state) toggleOrder();

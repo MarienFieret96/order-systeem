@@ -1,7 +1,6 @@
 import React from "react";
 
 const ListProductView = ({ changeToDetailView, productDetails, stukPrijs }) => {
-	console.log(productDetails);
 	const createNewArray = () => {
 		let tempArray = [];
 		if (stukPrijs) {
@@ -53,8 +52,8 @@ const ListProductView = ({ changeToDetailView, productDetails, stukPrijs }) => {
 				<>
 					{newArray?.map((item, index) => {
 						return (
-							<h3 key={index}>
-								{item.aantal} x {item.waarde}
+							<h3 key={index} className="weight-details">
+								{item.aantal} x per {item.waarde} verpakt
 							</h3>
 						);
 					})}
@@ -63,7 +62,7 @@ const ListProductView = ({ changeToDetailView, productDetails, stukPrijs }) => {
 				<>
 					{newArray?.map((item, index) => {
 						return (
-							<h3 key={index}>
+							<h3 key={index} className="weight-details">
 								{item.aantal} x {item.delen} x {item.waarde} gram
 							</h3>
 						);

@@ -76,8 +76,8 @@ const OrderByProduct = ({ orders }) => {
 					if (productObject.naam !== item.naam) return;
 					const tempProductObject = {
 						aantal: item.aantal,
-						delen: item.delen,
-						gewicht: item.gewicht,
+						delen: Number(item.delen),
+						gewicht: Number(item.gewicht),
 						opties: item.opties,
 						prijs: item.prijs,
 						productOpmerking: item.productOpmerking,
@@ -86,7 +86,7 @@ const OrderByProduct = ({ orders }) => {
 					if (item.prijs.perStuk) {
 						itemList[index].totaal += item.aantal;
 					} else {
-						itemList[index].totaal += item.gewicht;
+						itemList[index].totaal += Number(item.gewicht);
 					}
 				});
 			} else {
@@ -94,15 +94,15 @@ const OrderByProduct = ({ orders }) => {
 				if (item.prijs.perStuk) {
 					total = item.aantal;
 				} else {
-					total = item.gewicht;
+					total = Number(item.gewicht);
 				}
 				const tempObject = {
 					naam: item.naam,
 					productDetails: [
 						{
 							aantal: item.aantal,
-							delen: item.delen,
-							gewicht: item.gewicht,
+							delen: Number(item.delen),
+							gewicht: Number(item.gewicht),
 							opties: item.opties,
 							prijs: item.prijs,
 							productOpmerking: item.productOpmerking,
@@ -163,6 +163,11 @@ const Wrapper = styled.div`
 				h2 {
 					margin-bottom: 0.5rem;
 					font-weight: 400;
+				}
+				.weight-details {
+					font-size: 32px;
+					font-weight: 400;
+					padding: 0.75rem 0;
 				}
 			}
 		}

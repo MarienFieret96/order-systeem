@@ -13,7 +13,11 @@ const SingleProductView = ({ productDetails, stukPrijs }) => {
 
 	if (detailedView) {
 		return (
-			<DetailedProductView detail={detail} setDetailedView={setDetailedView} />
+			<DetailedProductView
+				detail={detail}
+				setDetailedView={setDetailedView}
+				stukPrijs={stukPrijs}
+			/>
 		);
 	}
 

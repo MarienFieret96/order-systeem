@@ -81,6 +81,29 @@ export const OrderProvider = ({ children }) => {
 	const clearCart = () => {
 		dispatch({ type: "CLEAR_CART" });
 	};
+
+	const substringFromLastSpace = (str) => {
+		const trimmedString = str.trim();
+		const lastSpaceIndex = trimmedString.lastIndexOf(" ");
+		if (lastSpaceIndex === -1) {
+			return trimmedString;
+		}
+
+		return trimmedString.substring(lastSpaceIndex + 1);
+	};
+
+	const sortAlphabetically = (arr, key) => {
+		return arr.sort((a, b) => {
+			const valueA = substringFromLastSpace(
+				a[key]?.toString().toLowerCase() || "",
+			);
+			const valueB = substringFromLastSpace(
+				b[key]?.toString().toLowerCase() || "",
+			);
+			return valueA.localeCompare(valueB);
+		});
+	};
+
 	const fetchOrders = async (date) => {
 		const options = { day: "2-digit", year: "numeric", month: "2-digit" };
 		dispatch({ type: "GET_ORDERS_BEGIN" });
@@ -89,7 +112,9 @@ export const OrderProvider = ({ children }) => {
 				`/orders/ordersOfThisDay/${date.toLocaleString("nl-NL", options)}`,
 			);
 			const orders = response.data.orders;
-			dispatch({ type: "GET_ORDERS_SUCCESS", payload: orders });
+			console.log(orders);
+			const sortedOrders = sortAlphabetically(orders, "naam");
+			dispatch({ type: "GET_ORDERS_SUCCESS", payload: sortedOrders });
 		} catch (error) {
 			dispatch({ type: "GET_ORDERS_ERROR" });
 		}

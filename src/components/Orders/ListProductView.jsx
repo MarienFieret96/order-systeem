@@ -1,6 +1,6 @@
 import React from "react";
 
-const ListProductView = ({ changeToDetailView, productDetails, stukPrijs }) => {
+const ListProductView = ({ productDetails, stukPrijs }) => {
 	const createNewArray = () => {
 		let tempArray = [];
 		if (stukPrijs) {
@@ -44,13 +44,24 @@ const ListProductView = ({ changeToDetailView, productDetails, stukPrijs }) => {
 		}
 		return tempArray;
 	};
+
+	const sortObjectsArray = (arr, key) => {
+		return arr.sort((a, b) => {
+			if (a[key] > b[key]) {
+				return -1;
+			}
+			return 0;
+		});
+	};
+
 	const newArray = createNewArray();
+	const sortedArray = sortObjectsArray(newArray, "waarde");
 
 	return (
 		<div>
 			{stukPrijs ? (
 				<>
-					{newArray?.map((item, index) => {
+					{sortedArray?.map((item, index) => {
 						return (
 							<h3 key={index} className="weight-details">
 								{item.aantal} x per {item.waarde} verpakt
@@ -60,7 +71,7 @@ const ListProductView = ({ changeToDetailView, productDetails, stukPrijs }) => {
 				</>
 			) : (
 				<>
-					{newArray?.map((item, index) => {
+					{sortedArray?.map((item, index) => {
 						return (
 							<h3 key={index} className="weight-details">
 								{item.aantal} x {item.delen} x {item.waarde} gram

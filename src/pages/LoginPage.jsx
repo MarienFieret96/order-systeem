@@ -11,10 +11,15 @@ const LoginPage = () => {
 		password: "",
 	});
 	const [loading, setLoading] = useState(false);
+
 	const handleSubmit = async () => {
 		setLoading(true);
+		const tempObject = {
+			email: login.email.toLowerCase(),
+			password: login.password,
+		};
 		try {
-			const { data } = await customFetch.post("/auth/login", login);
+			const { data } = await customFetch.post("/auth/login", tempObject);
 			navigate("/");
 		} catch (error) {
 			toast.error("inloggen niet gelukt");
@@ -34,7 +39,7 @@ const LoginPage = () => {
 					value={login.email}
 				/>
 				<input
-					type="text"
+					type="password"
 					placeholder="Wachtwoord"
 					onChange={(e) => setLogin({ ...login, password: e.target.value })}
 					value={login.password}

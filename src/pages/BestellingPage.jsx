@@ -57,13 +57,6 @@ const BestellingPage = () => {
 				/>
 			</div>
 			<RenderView />
-			{/* {orders.length !== 0 ? (
-				<OrderView orders={orders} />
-			) : (
-				<div className="orders">
-					<h1 className="no-order">Geen bestellingen</h1>
-				</div>
-			)} */}
 		</Wrapper>
 	);
 };

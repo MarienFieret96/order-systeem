@@ -6,25 +6,40 @@ import SingleProductView from "./SingleProductView";
 
 const OrderItem = ({ item }) => {
 	const [open, setOpen] = useState(false);
+	const [details, setDetails] = useState(false);
 	const { naam, productDetails, totaal } = item;
 
 	let stukPrijs = productDetails[0].prijs.perStuk;
 
 	return (
-		<div className="container" onClick={() => setOpen(!open)}>
+		<div className="container">
 			<div className="info-wrapper">
 				<h1>
 					{naam} - {totaal}
 					{!stukPrijs ? " gram" : "x"}
 				</h1>
 
-				<div className="icon">
+				{open && (
+					<button
+						className="btn btn-primary"
+						onClick={() => setDetails(!details)}
+					>
+						{details ? "Minder" : "Meer"} details
+					</button>
+				)}
+
+				<div
+					className="icon"
+					style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)" }}
+					onClick={() => setOpen(!open)}
+				>
 					<DropdownIcon />
 				</div>
 			</div>
 			{open && (
 				<div className="extra-info">
 					<SingleProductView
+						details={details}
 						productDetails={productDetails}
 						stukPrijs={stukPrijs}
 					/>
@@ -35,7 +50,6 @@ const OrderItem = ({ item }) => {
 };
 
 const OrderItemsByProduct = ({ orderByProduct }) => {
-	console.log(orderByProduct);
 	return (
 		<div className="wrapper">
 			{orderByProduct.map((item, index) => {
@@ -46,6 +60,7 @@ const OrderItemsByProduct = ({ orderByProduct }) => {
 };
 
 const OrderByProduct = ({ orders }) => {
+	console.log(orders);
 	const [orderArray] = useState(orders);
 	const [orderItems, setOrderItems] = useState([]);
 	const [orderByProduct, setOrderByProduct] = useState([]);
@@ -55,16 +70,28 @@ const OrderByProduct = ({ orders }) => {
 	}, []);
 	useLayoutEffect(() => {
 		const newObject = createNewDataset();
-		setOrderByProduct(newObject);
+		const sortedObject = sortAlphabetically(newObject, "naam");
+		setOrderByProduct(sortedObject);
 	}, [orderItems]);
 
 	const createOrderItemsArray = () => {
 		let orderItemsArray = [];
 		orderArray.forEach((itemArray) => {
-			itemArray.orderItems.forEach((item) => orderItemsArray.push(item));
+			itemArray.orderItems.forEach((item) => {
+				item.besteldeNaam = itemArray.naam;
+				orderItemsArray.push(item);
+			});
 		});
-		console.log(orderItemsArray);
+
 		setOrderItems(orderItemsArray);
+	};
+
+	const sortAlphabetically = (arr, key) => {
+		return arr.sort((a, b) => {
+			const valueA = a[key]?.toString().toLowerCase() || "";
+			const valueB = b[key]?.toString().toLowerCase() || "";
+			return valueA.localeCompare(valueB);
+		});
 	};
 
 	const createNewDataset = () => {
@@ -81,6 +108,7 @@ const OrderByProduct = ({ orders }) => {
 						opties: item.opties,
 						prijs: item.prijs,
 						productOpmerking: item.productOpmerking,
+						besteldeNaam: item.besteldeNaam,
 					};
 					itemList[index].productDetails.push(tempProductObject);
 					if (item.prijs.perStuk) {
@@ -106,6 +134,7 @@ const OrderByProduct = ({ orders }) => {
 							opties: item.opties,
 							prijs: item.prijs,
 							productOpmerking: item.productOpmerking,
+							besteldeNaam: item.besteldeNaam,
 						},
 					],
 					totaal: total,
@@ -144,6 +173,9 @@ const Wrapper = styled.div`
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
+				button {
+					margin: 0;
+				}
 				.icon {
 					height: 64px;
 					aspect-ratio: 1;
@@ -167,7 +199,27 @@ const Wrapper = styled.div`
 				.weight-details {
 					font-size: 32px;
 					font-weight: 400;
+				}
+				.weight-details-container {
+					border-top: 1px solid #767676;
 					padding: 0.75rem 0;
+					h3 {
+						font-weight: 400;
+						span {
+							font-weight: 700;
+						}
+					}
+
+					.weight-details-wrapper {
+						display: flex;
+						justify-content: space-between;
+						align-items: center;
+						margin-top: 5px;
+						font-size: 32px;
+						h3 {
+							font-weight: 400;
+						}
+					}
 				}
 			}
 		}

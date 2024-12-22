@@ -2,31 +2,18 @@ import React, { useState } from "react";
 import DetailedProductView from "./DetailedProductView";
 import ListProductView from "./ListProductView";
 
-const SingleProductView = ({ productDetails, stukPrijs }) => {
-	const [detailedView, setDetailedView] = useState(false);
-	const [detail, setDetail] = useState(0);
-
-	const changeToDetailView = (num) => {
-		setDetailedView(true);
-		setDetail(num);
-	};
-
-	if (detailedView) {
+const SingleProductView = ({ productDetails, stukPrijs, details }) => {
+	if (details) {
 		return (
 			<DetailedProductView
-				detail={detail}
-				setDetailedView={setDetailedView}
+				productDetails={productDetails}
 				stukPrijs={stukPrijs}
 			/>
 		);
 	}
 
 	return (
-		<ListProductView
-			changeToDetailView={changeToDetailView}
-			productDetails={productDetails}
-			stukPrijs={stukPrijs}
-		/>
+		<ListProductView productDetails={productDetails} stukPrijs={stukPrijs} />
 	);
 };
 

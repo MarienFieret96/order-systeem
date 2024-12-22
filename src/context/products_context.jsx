@@ -181,7 +181,7 @@ export const ProductsProvider = ({ children }) => {
 
 	const sortObjectsArray = (arr, key) => {
 		return arr.sort((a, b) => {
-			if (a[key] < b[key]) {
+			if (a[key].toLowerCase() < b[key].toLowerCase()) {
 				return -1;
 			}
 			return 0;

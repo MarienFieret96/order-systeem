@@ -20,7 +20,9 @@ const CartItem = ({ item, openModal, removeFromCart, cartItemIndex }) => {
 		<>
 			<div className="cart-row">
 				<p className="cart-item">{naam}</p>
-				<p className="cart-item">{gewicht && `${delen} x ${gewicht} gram`}</p>
+				<p className="cart-item">
+					{gewicht && `${delen} x ${Math.round(gewicht / delen)} gram`}
+				</p>
 				<p className="cart-item cart-item-array">
 					{opties.map((keuze, i) => (
 						<React.Fragment key={i}>{keuze}; </React.Fragment>

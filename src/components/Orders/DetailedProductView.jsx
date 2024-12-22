@@ -1,4 +1,5 @@
 import React from "react";
+import OptiesView from "./OptiesView";
 
 const DetailedProductView = ({ productDetails, stukPrijs }) => {
 	const sortBasedOnTotal = (arr) => {
@@ -16,6 +17,7 @@ const DetailedProductView = ({ productDetails, stukPrijs }) => {
 		});
 	};
 	const sortedProductDetails = sortBasedOnTotal(productDetails);
+	console.log(sortedProductDetails[0].opties);
 
 	return (
 		<div>
@@ -28,11 +30,14 @@ const DetailedProductView = ({ productDetails, stukPrijs }) => {
 									<h3 className="weight-details">{item.aantal}x</h3>
 									<h3>{item.besteldeNaam}</h3>
 								</div>
-								{item.productOpmerking.length !== 0 && (
-									<h3>
-										<span>Opmerking:</span> {item.productOpmerking}
-									</h3>
-								)}
+								<div>
+									<OptiesView optie={item.opties} />
+									{item.productOpmerking.length !== 0 && (
+										<h3>
+											<span>Opmerking:</span> {item.productOpmerking}
+										</h3>
+									)}
+								</div>
 							</div>
 						);
 					})}
@@ -48,11 +53,14 @@ const DetailedProductView = ({ productDetails, stukPrijs }) => {
 									</h3>
 									<h3>{item.besteldeNaam}</h3>
 								</div>
-								{item.productOpmerking.length !== 0 && (
-									<h3>
-										<span>Opmerking:</span> {item.productOpmerking}
-									</h3>
-								)}
+								<div>
+									<OptiesView optie={item.opties} />
+									{item.productOpmerking.length !== 0 && (
+										<h3>
+											<span>Opmerking:</span> {item.productOpmerking}
+										</h3>
+									)}
+								</div>
 							</div>
 						);
 					})}
